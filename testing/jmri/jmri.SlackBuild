@@ -1,25 +1,16 @@
 #!/bin/sh
 
 # Slackware build script for JMRI
-# Written by David Spencer <nobbutl@yahoo.co.uk>
+# Written by David Spencer <baildon.research@googlemail.com>
 # This script is dedicated to the public domain
 
 PRGNAM=jmri
-VERSION=2.4A
+VERSION=${VERSION:-2.10}
+ARCH=i486  # due to certain embedded libraries
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
 TARNAM=JMRI
-
-# Automatically determine the architecture we're building on:
-if [ -z "$ARCH" ]; then
-  case "$( uname -m )" in
-    i?86) ARCH=i486 ;;
-    arm*) ARCH=arm ;;
-    # Unless $ARCH is already set, use uname -m for all other archs:
-       *) ARCH=$( uname -m ) ;;
-  esac
-fi
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/SBo}
@@ -43,7 +34,7 @@ find . \
 
 mkdir -p $PKG/usr/bin
 cp -a \
-  DecoderPro InstallTest JmriDemo LocoTools PanelPro cornwall \
+  DecoderPro InstallTest JmriDemo LocoTools PanelPro SoundPro cornwall \
   $PKG/usr/bin
 chmod 755 $PKG/usr/bin/*
 
@@ -78,6 +69,15 @@ cp -a \
   COPYING \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+
+mkdir -p $PKG/usr/share/applications
+install -m 0644 -t $PKG/usr/share/applications \
+  $CWD/DecoderPro.desktop \
+  $CWD/PanelPro.desktop \
+  $CWD/SoundPro.desktop
+mkdir -p $PKG/usr/share/pixmaps
+install -m 0644 -t $PKG/usr/share/pixmaps \
+  $CWD/jmri.png
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
