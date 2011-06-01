@@ -1,0 +1,6 @@
+NOTE: This SlackBuild script is UNMAINTAINED.
+
+Perl module to convert latitude and longitude coordinates to and from
+Universal Transverse Mercator.
+
+Homepage: http://search.cpan.org/~grahamc/Geo-Coordinates-UTM/
