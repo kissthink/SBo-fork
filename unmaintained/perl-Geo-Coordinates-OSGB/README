@@ -1,0 +1,7 @@
+NOTE: This SlackBuild script is UNMAINTAINED.
+
+Perl module to convert latitude and longitude coordinates to and from
+British national grid references.  Can also tell you which Landranger map
+your point appears on.
+
+Homepage: http://search.cpan.org/~toby/Geo-Coordinates-OSGB/
