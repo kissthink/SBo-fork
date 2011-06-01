@@ -1,9 +1,13 @@
+This is a fork of the SlackBuilds.org repository. 
+
+The 'master' branch tracks SBo.
+
+The 'fork' branch contains the following additional subdirectories:
+  testing        beta versions of SBo SlackBuilds that I maintain
+  upversioned    version bumps of other peoples' SlackBuilds
+  bleedingedge   SlackBuilds to build the development branches of
+                 various apps and libraries
+  unmaintained   old SlackBuilds that may still be useful
 
 See http://slackbuilds.org/howto/ for instructions on 
-how to use the contents of this directory.
-
-Access is also available via:
- rsync://slackbuilds.org/slackbuilds
- git://slackbuilds.org/slackbuilds
- http://slackbuilds.org/gitweb/
- ftp://slackbuilds.org/
+how to use the contents of this repository.
