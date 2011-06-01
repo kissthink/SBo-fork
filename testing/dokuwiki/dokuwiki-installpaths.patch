@@ -1,0 +1,69 @@
+diff -u -r -N dokuwiki-2011-05-25_orig//conf/dokuwiki.php dokuwiki-2011-05-25_patched//conf/dokuwiki.php
+--- dokuwiki-2011-05-25_orig//conf/dokuwiki.php	2011-05-26 17:56:52.000000000 +0100
++++ dokuwiki-2011-05-25_patched//conf/dokuwiki.php	2011-05-30 12:52:05.991159894 +0100
+@@ -18,7 +18,7 @@
+ $conf['lang']        = 'en';              //your language
+ $conf['basedir']     = '';                //absolute dir from serveroot - blank for autodetection
+ $conf['baseurl']     = '';                //URL to server including protocol - blank for autodetect
+-$conf['savedir']     = './data';          //where to store all the files
++$conf['savedir']     = '/var/lib/dokuwiki/data';          //where to store all the files
+ $conf['allowdebug']  = 0;                 //allow debug output, enable if needed 0|1
+ 
+ /* Display Options */
+diff -u -r -N dokuwiki-2011-05-25_orig//inc/preload.php dokuwiki-2011-05-25_patched//inc/preload.php
+--- dokuwiki-2011-05-25_orig//inc/preload.php	1970-01-01 01:00:00.000000000 +0100
++++ dokuwiki-2011-05-25_patched//inc/preload.php	2011-05-30 12:52:05.991159894 +0100
+@@ -0,0 +1,2 @@
++<?php
++define('DOKU_CONF','/var/lib/dokuwiki/conf/');
+diff -u -r -N dokuwiki-2011-05-25_orig//install.php dokuwiki-2011-05-25_patched//install.php
+--- dokuwiki-2011-05-25_orig//install.php	2011-05-26 17:56:53.000000000 +0100
++++ dokuwiki-2011-05-25_patched//install.php	2011-05-30 12:57:26.651886494 +0100
+@@ -5,9 +5,12 @@
+  * @author      Chris Smith <chris@jalakai.co.uk>
+  */
+ 
++define('DOKU_CONF','/var/lib/dokuwiki/conf/');
++define('DOKU_DATA','/var/lib/dokuwiki/data/');
+ if(!defined('DOKU_INC')) define('DOKU_INC',dirname(__FILE__).'/');
+ if(!defined('DOKU_CONF')) define('DOKU_CONF',DOKU_INC.'conf/');
+-if(!defined('DOKU_LOCAL')) define('DOKU_LOCAL',DOKU_INC.'conf/');
++if(!defined('DOKU_LOCAL')) define('DOKU_LOCAL',DOKU_CONF);
++if(!defined('DOKU_DATA')) define('DOKU_DATA',DOKU_INC.'data/');
+ 
+ // check for error reporting override or set error reporting to sane values
+ if (!defined('DOKU_E_LEVEL')) { error_reporting(E_ALL ^ E_NOTICE); }
+@@ -47,7 +50,7 @@
+     '2009-02-14'   => 'ec8c04210732a14fdfce0f7f6eead865',
+     '2009-12-25'   => '993c4b2b385643efe5abf8e7010e11f4',
+     '2010-11-07'   => '7921d48195f4db21b8ead6d9bea801b8',
+-    '2011-05-25'   => '4241865472edb6fa14a1227721008072',
++    '2011-05-25'   => '9841b8559e4fd7811b4163629f1a5d3a',
+ );
+ 
+ 
+@@ -419,15 +422,15 @@
+ 
+     $dirs = array(
+         'conf'      => DOKU_LOCAL,
+-        'data'      => DOKU_INC.'data',
+-        'pages'     => DOKU_INC.'data/pages',
+-        'attic'     => DOKU_INC.'data/attic',
+-        'media'     => DOKU_INC.'data/media',
+-        'meta'      => DOKU_INC.'data/meta',
+-        'cache'     => DOKU_INC.'data/cache',
+-        'locks'     => DOKU_INC.'data/locks',
+-        'index'     => DOKU_INC.'data/index',
+-        'tmp'       => DOKU_INC.'data/tmp'
++        'data'      => DOKU_DATA,
++        'pages'     => DOKU_DATA.'pages',
++        'attic'     => DOKU_DATA.'attic',
++        'media'     => DOKU_DATA.'media',
++        'meta'      => DOKU_DATA.'meta',
++        'cache'     => DOKU_DATA.'cache',
++        'locks'     => DOKU_DATA.'locks',
++        'index'     => DOKU_DATA.'index',
++        'tmp'       => DOKU_DATA.'tmp'
+     );
+ 
+     $ok = true;

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+dokuwiki: dokuwiki (simple to use Wiki)
+dokuwiki:
+dokuwiki: DokuWiki is a standards compliant, simple to use Wiki, mainly aimed at
+dokuwiki: creating documentation of any kind. It is targeted at developer teams,
+dokuwiki: workgroups and small companies. All data is stored in plain text
+dokuwiki: files; no database is required.
+dokuwiki:
+dokuwiki: Homepage: http://www.dokuwiki.org/
+dokuwiki:
+dokuwiki:
+dokuwiki:
