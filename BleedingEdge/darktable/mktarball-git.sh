@@ -56,7 +56,7 @@ fi
     ;;
   esac
 
-  VERSION="${VERSION:-git.$REVISION}"
+  VERSION="${VERSION:-$(echo $BRANCH | sed 's/-/_/g').$REVISION}"
   echo "--> Making the sourcecode tarball: $PRGNAM-$VERSION.tar.$ZEXT"
   tar -c --transform="s/^\\./$PRGNAM-$VERSION/" . \
     | $ZCMD > ../$PRGNAM-$VERSION.tar.$ZEXT
