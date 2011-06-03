@@ -1,0 +1,53 @@
+#!/bin/sh
+# Start/stop/restart gpsd
+# by Sebastian Arcus
+
+
+#gpsd binary
+gpsd="/usr/sbin/gpsd"
+gpsd_options="-n"
+gpsd_socket="/var/run/gpsd.sock"
+gpsd_device="/dev/ttyUSB0"
+
+gpsd_start() {
+
+  # remove stale socket
+  if [ -f $gpsd_socket ]; then
+    rm $gpsd_socket
+  fi
+
+  if [ ! -f $gpsd -o ! -x $gpsd ] ; then
+      echo "Gpsd binary not found or is not executable."
+      exit 1
+  fi
+
+  echo "Start gpsd daemon"
+  $gpsd $gpsd_options -F $gpsd_socket $gpsd_device
+
+}
+
+gpsd_stop() {
+  echo "Stopping gpsd process"
+  killall gpsd 2&>1 /dev/null
+  return 0
+}
+
+
+case "$1" in
+  start)
+    gpsd_start
+    ;;
+  stop)
+    gpsd_stop
+    ;;
+  restart)
+    gpsd_stop
+    sleep 1
+    gpsd_start
+    ;;
+  *)
+    printf "Usage: $N {start|stop|restart}\n"
+    exit 1
+    ;;
+esac
+
