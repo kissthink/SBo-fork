@@ -1,0 +1,7 @@
+PRGNAM="grass"
+TYPE="svn"
+URL="http://svn.osgeo.org/grass/grass/trunk"
+BRANCH=""
+REVISION=""
+EXPORT=""
+COMPRESS=""
