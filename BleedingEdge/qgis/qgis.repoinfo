@@ -1,0 +1,7 @@
+PRGNAM="qgis"
+TYPE="git"
+URL="git://github.com/qgis/Quantum-GIS"
+BRANCH="release-1_7_0"
+REVISION=""
+EXPORT=""
+COMPRESS="bz2"
