@@ -1,0 +1,7 @@
+PRGNAM="darktable"
+TYPE="git"
+URL="git://darktable.git.sf.net/gitroot/darktable/darktable"
+BRANCH="master"
+REVISION=""
+EXPORT="n"
+COMPRESS="gz"
