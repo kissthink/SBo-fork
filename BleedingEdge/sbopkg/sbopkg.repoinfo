@@ -1,0 +1,7 @@
+PRGNAM="sbopkg"
+TYPE="svn"
+URL="http://sbopkg.googlecode.com/svn/trunk"
+BRANCH=""
+REVISION=""
+EXPORT=""
+COMPRESS="gz"

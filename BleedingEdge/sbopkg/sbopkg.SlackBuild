@@ -8,10 +8,10 @@
 # Based on the SlackBuilds.org template.
 
 PRGNAM=sbopkg
-VERSION=${VERSION:-0.35.0}
+VERSION=${VERSION:-trunk}
 ARCH=${ARCH:-noarch}
 BUILD=${BUILD:-1}
-TAG=${TAG:-_cng}
+TAG=${TAG:-_svn}
 PKGTYPE=${PKGTYPE:-tgz}
 
 CWD=$(pwd)
@@ -35,18 +35,18 @@ find . \
   -perm 400 \) -exec chmod 644 {} \;
 
 mkdir -p $PKG/etc/sbopkg
-cp -a etc/sbopkg/* $PKG/etc/sbopkg
+cp -a src/etc/sbopkg/* $PKG/etc/sbopkg
 mv $PKG/etc/sbopkg/sbopkg.conf $PKG/etc/sbopkg/sbopkg.conf.new
 
 mkdir -p $PKG/usr/sbin
-cp usr/sbin/* $PKG/usr/sbin
+cp src/usr/sbin/* $PKG/usr/sbin
 
 mkdir -p $PKG/usr/man
-cp -a usr/man/* $PKG/usr/man
+cp -a src/usr/man/* $PKG/usr/man
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a usr/doc/* $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a src/usr/doc/* $PKG/usr/doc/$PRGNAM-$VERSION
 ln -s /usr/doc/$PRGNAM-$VERSION/README-repos $PKG/etc/$PRGNAM/repos.d/README
 ln -s /usr/doc/$PRGNAM-$VERSION/README-renames \
     $PKG/etc/$PRGNAM/renames.d/README
@@ -54,8 +54,8 @@ cp -a $CWD/sbopkg.SlackBuild $PKG/usr/doc/$PRGNAM-$VERSION
 chown root:root $PKG/usr/doc/$PRGNAM-$VERSION/sbopkg.SlackBuild
 
 mkdir -p $PKG/install
-cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/doinst.sh > $PKG/install/doinst.sh
+cat tools/slack-desc > $PKG/install/slack-desc
+cat tools/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.$PKGTYPE
