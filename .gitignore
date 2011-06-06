@@ -3,5 +3,6 @@
 *.tar.gz.asc
 *.tar.bz2
 *.sbopkg
+*.repoinfo
 *~
 .directory
