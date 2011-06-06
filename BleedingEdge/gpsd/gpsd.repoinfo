@@ -1,0 +1,7 @@
+PRGNAM="gpsd"
+TYPE="git"
+URL="git://git.berlios.de/gpsd"
+BRANCH="master"
+REVISION=""
+EXPORT="y"
+COMPRESS="gz"
