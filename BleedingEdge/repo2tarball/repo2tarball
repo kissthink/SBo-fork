@@ -28,7 +28,7 @@ else
   exit 2
 fi
 
-while getopts "f:p:t:u:b:r:z:o:" opt; do
+while getopts "f:p:t:u:b:r:e:z:o:" opt; do
   echo "opt=$opt OPTARG=$OPTARG"
   case $opt in
   f) if [ -e "$OPTARG" ]; then
@@ -170,7 +170,7 @@ else
     git)
       git clone $URL $PRGNAM-$TYPE
       if [ "$REVISION" != "" ]; then
-        git checkout -q $REVISION
+        ( cd $PRGNAM-$TYPE; git checkout -q $REVISION )
       fi
       ;;
     svn)
