@@ -22,9 +22,12 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# Unofficially modified for SBo-style and git by David Spencer <baildon.research@googlemail.com>
+
 PRGNAM=xfce4-mixer
-VERSION=4.8.0
+VERSION=${VERSION:-4.8.0}
 BUILD=${BUILD:-1}
+TAG=${TAG:-_git}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -37,6 +40,7 @@ fi
 CWD=$(pwd)
 TMP=${TMP:-/tmp}
 PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
 
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
@@ -69,7 +73,7 @@ find . \
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-./configure \
+./autogen.sh \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc/xfce \
@@ -87,7 +91,7 @@ find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  AUTHORS COPYING ChangeLog HACKING INSTALL NEWS README THANKS TODO \
+  AUTHORS COPYING HACKING INSTALL NEWS README THANKS TODO \
   $PKG/usr/doc/$PRGNAM-$VERSION
 
 mkdir -p $PKG/install
@@ -95,4 +99,4 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
 
 cd $PKG
-/sbin/makepkg -l y -c n $TMP/$PRGNAM-$VERSION-$ARCH-$BUILD.txz
+/sbin/makepkg -c n -l y $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
