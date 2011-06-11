@@ -2,6 +2,7 @@
 *.tar.gz
 *.tar.gz.asc
 *.tar.bz2
+*.tar.xz
 *.sbopkg
 *~
 .directory
