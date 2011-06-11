@@ -1,18 +1,28 @@
 #!/bin/sh
 # Start/stop/restart gpsd
 # by Sebastian Arcus
+# 11 June 2011
 
+# This file is necessary because the udev rule and scripts which come with
+# gpsd are not able to start gpsd during boot (which is tries if a gps adapter
+# is already plugged in). This is because the first udev pass is while the root
+# file-system is read-only - and the the socket file can't be created. This
+# script will assume that you have a gps device on /dev/gps0 but you can change
+# the setting to something else or empty it if you don't need it. Doesn't seem
+# to present any downside if there is nothing plugged in. You will still need
+# the udev rule and scripts from the gpsd project to enable hotplug of (mainly
+# usb) gps devices.
 
 #gpsd binary
 gpsd="/usr/sbin/gpsd"
 gpsd_options="-n"
 gpsd_socket="/var/run/gpsd.sock"
-gpsd_device="/dev/ttyUSB0"
+gpsd_device="/dev/gps0"
 
 gpsd_start() {
 
   # remove stale socket
-  if [ -f $gpsd_socket ]; then
+  if [ -n "$gpsd_socket" -a -f $gpsd_socket ]; then
     rm $gpsd_socket
   fi
 
@@ -21,14 +31,18 @@ gpsd_start() {
       exit 1
   fi
 
+  if [ -n "$gpsd_socket" ]; then
+    gpsd_socket="-F $gpsd_socket"
+  fi
+
   echo "Start gpsd daemon"
-  $gpsd $gpsd_options -F $gpsd_socket $gpsd_device
+  $gpsd $gpsd_options $gpsd_socket $gpsd_device
 
 }
 
 gpsd_stop() {
   echo "Stopping gpsd process"
-  killall gpsd 2&>1 /dev/null
+  killall gpsd >/dev/null 2>&1
   return 0
 }
 
