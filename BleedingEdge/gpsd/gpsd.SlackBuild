@@ -102,7 +102,7 @@ install -D -m 0755 gpsd.hotplug.wrapper \
 mkdir -p $PKG/etc/udev/rules.d
 cat gpsd.rules | \
   sed 's/^ATTRS/#&/' \
-  >$PKG/etc/udev/rules.d/25-gpsd.rules.new
+  >$PKG/etc/udev/rules.d/97-gpsd.rules.new
 install -D -m 0644 $CWD/rc.gpsd.new \
   $PKG/etc/rc.d/rc.gpsd.new
 

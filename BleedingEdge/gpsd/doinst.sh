@@ -22,7 +22,7 @@ preserve_perms() {
   config $NEW
 }
 
-config etc/udev/rules.d/25-gpsd.new
+config etc/udev/rules.d/97-gpsd.rules.new
 preserve_perms etc/rc.d/rc.gpsd.new
 
 if [ -x /usr/bin/update-desktop-database ]; then

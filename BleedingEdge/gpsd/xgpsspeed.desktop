@@ -7,4 +7,4 @@ Exec=xgpsspeed
 Icon=/usr/share/pixmaps/gpsd-logo.png
 Terminal=false
 Type=Application
-Categories=Application;Graphics;
+Categories=Utility;

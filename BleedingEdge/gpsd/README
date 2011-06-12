@@ -1,27 +1,29 @@
-gpsd is a service daemon that monitors one or more GPSes attached to a 
-host computer through serial or USB ports, making all data on the location, 
-course, and velocity available to be queried on TCP port 2947 of the host 
-computer.  With gpsd, multiple GPS client applications (such as navigational 
-and wardriving software) can share access to GPSes without contention or 
-loss of data.  Applications that presently use gpsd include Viking and Kismet.
+gpsd is a service daemon that monitors one or more GPSes attached to
+a host computer through serial or USB ports, making all data on the
+location, course, and velocity available to be queried on TCP port
+2947 of the host computer.  With gpsd, multiple GPS client applications
+(such as navigational and wardriving software) can share access to GPSes
+without contention or loss of data.  Applications that presently use
+gpsd include Viking and Kismet.
 
 To build gpsd requires scons.
 
 See README.build for some additional build options that might be useful.
 
-To enable automatic startup of gpsd on device hotplug (and coldplug), you need to 
-perform the following three steps:
+To enable automatic startup of gpsd when a GPS device is connected via
+USB, you need to perform the following three steps:
 
-1. Edit the file /etc/udev/rules.d/25-gpsd.rules and uncomment the line (or lines) 
-beginning '#ATTRS' that corresponds to your GPS hardware. 
+1. Edit the file /etc/udev/rules.d/97-gpsd.rules and uncomment the line
+(or lines) beginning '#ATTRS' that corresponds to your GPS hardware.  To
+avoid clashes with other USB serial devices that you might have, do not
+uncomment lines that do not correspond to your GPS hardware.
 
 2. Make the file /etc/rc.d/rc.gpsd executable.
    chmod +x /etc/rc.d/rc.gpsd
 
 3. Add the following lines to /etc/rc.d/rc.local
 
-if [ -x /etc/rc.d/rc.gpsd ]; then
-  if [ -e $(ls -1 /dev/gps* | head -1) ]; then
-    /etc/rc.d/rc.gpsd start
-  fi
+if [ -x /etc/rc.d/rc.gpsd -a -e /dev/gps0 ]; then
+  /etc/rc.d/rc.gpsd start
 fi
+
