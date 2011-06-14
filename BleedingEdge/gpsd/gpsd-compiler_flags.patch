@@ -1,0 +1,19 @@
+diff -u -r gpsd-git/SConstruct gpsd-git.new/SConstruct
+--- gpsd-git/SConstruct	2011-06-13 23:41:53.642101654 +0100
++++ gpsd-git.new/SConstruct	2011-06-14 00:09:34.684396178 +0100
+@@ -146,13 +146,13 @@
+ # set defaults from environment
+ env['STRIP'] = "strip"
+ env['CHRPATH'] = 'chrpath'
+-for i in ["AR", "ARFLAGS", "CCFLAGS", "CFLAGS", "CC", "CXX", "CXXFLAGS", "STRIP", "CHRPATH", "LD", "TAR"]:
++for i in ["AR", "ARFLAGS", "CC", "CXX", "STRIP", "CHRPATH", "LD", "TAR"]:
+     if os.environ.has_key(i):
+         j = i
+         if i == "LD":
+             i = "SHLINK"
+         env[j]=os.getenv(i)
+-for flags in ["LDFLAGS", "CPPFLAGS"]:
++for flags in ["LDFLAGS", "CPPFLAGS", "CCFLAGS", "CFLAGS", "CXXFLAGS"]:
+     if os.environ.has_key(flags):
+         env.MergeFlags([os.getenv(flags)])
+ 
