@@ -1,5 +1,5 @@
 repo2tarball is a shell script for snapshotting an upstream source repository
-(git or svn) and creating a tarball.  The tarball is suitable for use with 
+(git or svn) and creating a tarball.  The tarball is suitable for use with
 SlackBuild scripts from SlackBuilds.org and elsewhere.
 
 Here is an example of how repo2tarball might be used:
@@ -8,10 +8,10 @@ Here is an example of how repo2tarball might be used:
 
 This creates a tarball for the upstream package 'lensfun'.  The repository type
 is Subversion, and the repository URL is svn://svn.berlios.de/lensfun/trunk.
-The tarball will be compressed with bzip2.  
+The tarball will be compressed with bzip2.
 
 The repo2tarball script will use the upstream branch name (in this case,
-master) and, by default, the upstream latest revision (eg, 137), and will create
+trunk) and, by default, the upstream latest revision (eg, 137), and will create
 a tarball named lensfun-trunk.137.tar.bz2.  The existing SlackBuild script can
 then be called as follows to build from the tarball:
 
@@ -40,39 +40,47 @@ The following options can be specified:
 
 -p prgnam
   The PRGNAM (program name) of the tarball which will be created.  This also
-  determines the name of the repoinfo file to be read, if it exists. 
+  determines the name of the repoinfo file to be read, if it exists.
 
 -f filename
-  The repoinfo file from which to read options.  By default, PRGNAM.repoinfo 
+  The repoinfo file from which to read options.  By default, PRGNAM.repoinfo
   will be read if it exists.
 
 -t git|svn
   The type of the upstream repository, which must be either 'git' or 'svn'.
 
 -u url
-  The URL of the upstream repository. 
+  The URL of the upstream repository.
 
 -b branch
-  The branch of the upstream repository to use.  By default, this will usually
-  be 'master' (for git repos) or 'trunk' (for svn repos).  The branch can also
-  be specified as BRANCH="branchname" in a .repoinfo file or the environment.
+  The branch of the upstream repository to use.  This option can also be
+  specified as BRANCH="branchname" in a .repoinfo file or the environment.
+
+  For git repos, the default upstream branch will usually be 'master'.
+
+  For svn repos, the branch should be specified as part of the URL (usually as
+  'trunk') and this option should be left empty or unspecified.
 
 -r revision
   The revision to check out from the upstream repository.  By default, the
   latest revision will be used.  For git repos, this will be a seven-character
-  abbreviated commit id.  For svn repos, this will be a revision number.  The
-  revision can also be specified as REVISION="rev" in a .repoinfo file or the
-  environment. 
+  abbreviated commit id.  For svn repos, this will be an integer revision
+  number.  The revision can also be specified as REVISION="rev" in a .repoinfo
+  file or the environment.
 
 -e y|n
-  Whether to export the checked-out tree (default 'yes'), 
+  Whether to export the checked-out tree.  If 'y' or 'yes' (the default),
+  revision control files (for example, .git or .svn subdirectories) will be
+  excluded.  However, for packages that require these files for a successful
+  build, 'n' or 'no' should be specified.  This option can also be specified as
+  EXPORT="n" in a .repoinfo file or the environment.
 
 -z gz|bz2
-  The compression type to use for the tarball.  This should be either gz (which
-  is the default), or bz2.  The compression type can also be specified as
-  COMPRESSION="type" in a .repoinfo file or the environment. 
+  The compression type to use for the tarball.  This should be gz (which
+  is the default), or bz2, or xz.  The compression type can also be specified as
+  COMPRESSION="type" in a .repoinfo file or the environment.
 
 -o dirname
   The directory in which to create the output tarball.  By default, the tarball
   will be created in the current directory.  The output directory can also be
-  specified as OUTPUT="dirname" in the environment. 
+  specified as OUTPUT="dirname" in the environment.
