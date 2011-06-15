@@ -1,6 +1,7 @@
 #Files mentioned in this file will be ignored by git
 *.tar.gz
 *.tar.gz.asc
+*.tgz
 *.tar.bz2
 *.tar.xz
 *.sbopkg
