@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+         |-----handy-ruler------------------------------------------------------|
+mod_fcgid: mod_fcgid (Fast CGI module for Apache httpd)
+mod_fcgid:
+mod_fcgid: This is a high performance alternative to mod_cgi or mod_cgid.  It
+mod_fcgid: starts a sufficient number of instances of the CGI program to handle
+mod_fcgid: concurrent requests, and these instances remain running to handle
+mod_fcgid: further incoming requests.
+mod_fcgid:
+mod_fcgid: Homepage: http://httpd.apache.org/mod_fcgid/
+mod_fcgid:
+mod_fcgid:
+mod_fcgid:

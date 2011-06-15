@@ -1,0 +1,6 @@
+mod_fcgid is a high performance alternative to mod_cgi or mod_cgid, which starts
+a sufficient number of instances of the CGI program to handle concurrent
+requests, and these instances remain running to handle further incoming 
+requests. 
+
+http://httpd.apache.org/mod_fcgid/
