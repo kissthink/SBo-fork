@@ -3,4 +3,7 @@ a sufficient number of instances of the CGI program to handle concurrent
 requests, and these instances remain running to handle further incoming 
 requests. 
 
+To enable mod_fcgid, please add the following line to /etc/httpd/httpd.conf --
+  Include /etc/httpd/extra/mod_fcgid.conf
+
 http://httpd.apache.org/mod_fcgid/
