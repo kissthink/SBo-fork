@@ -56,6 +56,11 @@ if pkg-config --exists grass; then
   WITHGRASS="-DGRASS_PREFIX=$(pkg-config --variable=prefix grass)"
 fi
 
+WITHSERVER="FALSE"
+if [ "${SERVER:-no}" = "yes" ]; then
+  WITHSERVER="TRUE"
+fi
+
 cmake . \
   -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
   -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
@@ -63,7 +68,7 @@ cmake . \
   -DQGIS_LIB_SUBDIR=lib${LIBDIRSUFFIX} \
   -DQGIS_LIBEXEC_SUBDIR=lib${LIBDIRSUFFIX}/qgis \
   -DQGIS_PLUGIN_SUBDIR=lib${LIBDIRSUFFIX}/qgis \
-  -DWITH_MAPSERVER=FALSE \
+  -DWITH_MAPSERVER="$WITHSERVER" \
   $WITHGRASS
 
 make
