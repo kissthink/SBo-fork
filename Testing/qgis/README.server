@@ -1,8 +1,12 @@
 QGIS Server is a WMS server for your QGS project.  It requires fcgi.
 It is optionally built at the same time as QGIS; you need to specify
-SERVER=y to the SlackBuild, for example
+SERVER=yes to the SlackBuild, for example
 
-  SERVER=y sh qgis.SlackBuild
+  SERVER=yes sh qgis.SlackBuild
+
+By default the server is installed into /var/www/cgi-bin/qgis, but a
+different directory can be specified by passing CGIBINDIR=<path> to
+the SlackBuild.
 
 After installing QGIS (and the server), you will need to set up the
 server as follows:

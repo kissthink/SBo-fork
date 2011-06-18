@@ -56,9 +56,10 @@ if pkg-config --exists grass; then
   WITHGRASS="-DGRASS_PREFIX=$(pkg-config --variable=prefix grass)"
 fi
 
-WITHSERVER="FALSE"
+WITHSERVER="-DWITH_MAPSERVER=FALSE"
 if [ "${SERVER:-no}" = "yes" ]; then
-  WITHSERVER="TRUE"
+  CGIBINDIR="${CGIBINDIR:-/var/www/cgi-bin/qgis}"
+  WITHSERVER="-DWITH_MAPSERVER=TRUE -DQGIS_CGIBIN_DIR=$CGIBINDIR"
 fi
 
 cmake . \
@@ -68,7 +69,7 @@ cmake . \
   -DQGIS_LIB_SUBDIR=lib${LIBDIRSUFFIX} \
   -DQGIS_LIBEXEC_SUBDIR=lib${LIBDIRSUFFIX}/qgis \
   -DQGIS_PLUGIN_SUBDIR=lib${LIBDIRSUFFIX}/qgis \
-  -DWITH_MAPSERVER="$WITHSERVER" \
+  $WITHSERVER \
   $WITHGRASS
 
 make
@@ -91,6 +92,14 @@ cp -a \
   PROVENANCE README doc/SPONSORS TODO doc/TRANSLATORS \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+
+# Move a couple of optional server files to a more appropriate place -- they
+# need to be properly customised (and the server works without them).
+if [ -d $PKG/$CGIBINDIR ]; then
+  mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION/examples
+  mv $PKG/$CGIBINDIR/wms_metadata.xml $PKG/$CGIBINDIR/admin.sld \
+    $PKG/usr/doc/$PRGNAM-$VERSION/examples
+fi
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
