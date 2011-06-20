@@ -9,9 +9,12 @@
 
 # Modified by the SlackBuilds.org Project
 
+# Unofficially modified for perl-5.14 compatibility
+# by David Spencer <baildon.research@googlemail.com>
+
 PRGNAM=postgresql
 VERSION=9.0.3
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-1a}
 TAG=${TAG:-_SBo}
 
 PG_UID=${PG_UID:-209}
@@ -69,6 +72,9 @@ tar xvf $CWD/$PRGNAM-$VERSION.tar.bz2
 cd $PRGNAM-$VERSION
 chown -R root:root .
 chmod -R a-s,u+w,go+r-w .
+
+# Patch from Gentoo (thanks!) http://bugs.gentoo.org/show_bug.cgi?id=366621#c2
+cat $CWD/postgresql-perl514.patch | patch -p2
 
 CFLAGS="$SLKCFLAGS" \
 ./configure \
