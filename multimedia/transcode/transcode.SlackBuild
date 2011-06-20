@@ -22,9 +22,11 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# Unofficially modified by David Spencer <baildon.research@googlemail.com>
+
 PRGNAM=transcode
 VERSION=1.1.5
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-2a}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -74,6 +76,7 @@ patch -p1 -i $CWD/transcode-jpeg8.patch
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
+LDFLAGS="-L/usr/lib${LIBDIRSUFFIX}" \
 ./configure \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
