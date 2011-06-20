@@ -23,9 +23,11 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# Unofficially modified by David Spencer <baildon.research@googlemail.com>
+
 PRGNAM=perl-extutils-depends
 VERSION=${VERSION:-0.302}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-1a}
 TAG=${TAG:-_SBo}
 
 SRCNAM=ExtUtils-Depends
@@ -58,7 +60,7 @@ perl Makefile.PL || exit 1
 make
 make install INSTALLDIRS=vendor DESTDIR=$PKG
 
-mv $PKG/usr/share/man $PKG/usr && rm -rf $PKG/usr/share
+mv $PKG/usr/share/man $PKG/usr
 gzip -9 $PKG/usr/man/man3/* 2> /dev/null
 
 # Remove perlocal.pod and .packlist from $PKG
