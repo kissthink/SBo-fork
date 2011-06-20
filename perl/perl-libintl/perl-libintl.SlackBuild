@@ -4,9 +4,11 @@
 
 # Written by Luis Henrique <lmello.009@gmail.com>
 
+# Unofficially modified by David Spencer <baildon.research@googlemail.com>
+
 PRGNAM=perl-libintl
 VERSION=${VERSION:-1.16}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-1a}
 TAG=${TAG:-_SBo}
 
 # Automatically determine the architecture we're building on:
@@ -55,12 +57,12 @@ find . \
 
 perl Makefile.PL
 make
-make install DESTDIR=$PKG
+make install INSTALLDIRS=vendor DESTDIR=$PKG
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
-mv $PKG/usr/share/man $PKG/usr && rm -rf $PKG/usr/share
+mv $PKG/usr/share/man $PKG/usr
 
 ( cd $PKG/usr/man
   find . -type f -exec gzip -9 {} \;
