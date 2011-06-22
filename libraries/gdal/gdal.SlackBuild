@@ -1,6 +1,9 @@
 #!/bin/sh
 # Slackware build script for GDAL
-# Originally written by Marco Cecchetti <mrc.ild@gmail.com>
+# Copyright 2009 Marco Cecchetti <mrc.ild@gmail.com>
+# All rights reserved.
+#
+#
 # Maintained by David Spencer <baildon.research@googlemail.com>
 
 PRGNAM=gdal
