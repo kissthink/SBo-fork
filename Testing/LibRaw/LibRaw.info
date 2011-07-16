@@ -1,12 +1,12 @@
 PRGNAM="LibRaw"
-VERSION="0.13.5"
+VERSION="0.13.7"
 HOMEPAGE="http://www.libraw.org/"
-DOWNLOAD="http://www.libraw.org/data/LibRaw-0.13.5.tar.gz \
-          http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.13.5.tar.gz \
-          http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.13.5.tar.gz"
-MD5SUM="bf6894f6a60b411da012f58a0954e910 \
-        b53a15035fcf50ada543aba544fbf360 \
-        792d7c2112f749cda648ee3fa9b1c0c1"
+DOWNLOAD="http://www.libraw.org/data/LibRaw-0.13.7.tar.gz \
+          http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.13.7.tar.gz \
+          http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.13.7.tar.gz"
+MD5SUM="5c189e16d61f423162da57333b7c8873 \
+        35e995b84c9115f203d394c13706bdd7 \
+        1066882cd18a6e30a0fbfa2a8e47b1f7"
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
 MAINTAINER="David Spencer"
