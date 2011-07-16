@@ -3,7 +3,7 @@
 # Slackware build script for opera
 
 # Copyright 2006  Martin Lefebvre <dadexter@gmail.com>
-# Copyright 2008,2009,2010  Robby Workman, Northport, Alabama, USA
+# Copyright 2008-2011  Robby Workman, Northport, Alabama, USA
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -23,11 +23,11 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# Maintained by markus reichelt <slackbuilds@mareichelt.de> 0xCCEEF115
+# Now maintained by vvoody <vvoodywang@gmail.com>
 
 PRGNAM=opera
-VERSION=11.11
-REVNO=2109
+VERSION=11.50
+REVNO=1074
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -57,15 +57,22 @@ fi
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
-cd $PKG
-rm -rf $PRGNAM-${VERSION}-${REVNO}.${ARCH}
-rpm2cpio < $CWD/$PRGNAM-${VERSION}-${REVNO}.${ARCH}.rpm | cpio -imdv
+cd $TMP
+rm -rf $PRGNAM-${VERSION}-${REVNO}.${ARCH}.linux
+tar xf $CWD/$PRGNAM-${VERSION}-${REVNO}.${ARCH}.linux.tar.xz
+cd $PRGNAM-${VERSION}-${REVNO}.${ARCH}.linux
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-[ "$LIBDIRSUFFIX" = "64" ] && patch -p1 < $CWD/fixup_libdir.diff
-[ "$LIBDIRSUFFIX" = "64" ] && mv $PKG/usr/lib $PKG/usr/lib${LIBDIRSUFFIX}
+if [ "$LIBDIRSUFFIX" = "64" ]; then
+  patch -p1 < $CWD/fixup_libdir.diff
+  mv lib lib64
+fi
 
+./install \
+  --prefix /usr \
+  --repackage $PKG/usr
+  
 mv $PKG/usr/share/man $PKG/usr
 
 mv $PKG/usr/share/doc $PKG/usr
