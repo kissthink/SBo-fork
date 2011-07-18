@@ -29,7 +29,7 @@ gpsd_start() {
       echo "$(basename $0): Starting gpsd for $DEVNAME"
       ACTION=add DEVNAME=$DEVNAME /lib/udev/gpsd.hotplug.wrapper
     else
-      echo "$(basename $0): $DEVNAME not available, gpsd not started"
+      echo "$(basename $0): $DEVNAME not found, gpsd not started"
     fi
   done
 
