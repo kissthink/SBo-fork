@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Slackware build script for Quantum GIS
-# Copyright 2011 David Spencer, Baildon, West Yorkshire, UK
+# Copyright 2011 David Spencer, Baildon, West Yorkshire, U.K.
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -74,8 +74,8 @@ if pkg-config --exists grass; then
 fi
 
 WITHSERVER="-DWITH_MAPSERVER=FALSE"
+CGIBINDIR="${CGIBINDIR:-/var/www/cgi-bin/qgis}"
 if [ "${SERVER:-no}" = "yes" ]; then
-  CGIBINDIR="${CGIBINDIR:-/var/www/cgi-bin/qgis}"
   WITHSERVER="-DWITH_MAPSERVER=TRUE -DQGIS_CGIBIN_SUBDIR=$CGIBINDIR"
 fi
 
