@@ -3,9 +3,11 @@
 # Written by  <pedro@gepasi.org>
 # This script is hereby put in the public domain
 
+# Unofficially upversioned by David Spencer <baildon.research@googlemail.com>
+
 PRGNAM=tangogps
-VERSION=0.99.2
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-0.99.4}
+BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
 # Automatically determine the architecture we're building on:
