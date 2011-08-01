@@ -74,8 +74,8 @@ if pkg-config --exists grass; then
 fi
 
 WITHSERVER="-DWITH_MAPSERVER=FALSE"
+CGIBINDIR="${CGIBINDIR:-/var/www/cgi-bin/qgis}"
 if [ "${SERVER:-no}" = "yes" ]; then
-  CGIBINDIR="${CGIBINDIR:-/var/www/cgi-bin/qgis}"
   WITHSERVER="-DWITH_MAPSERVER=TRUE -DQGIS_CGIBIN_SUBDIR=$CGIBINDIR"
 fi
 
