@@ -1,0 +1,11 @@
+--- gpsd-git/gpsd.hotplug	2011-08-02 08:08:12.504517397 +0100
++++ gpsd-git.new/gpsd.hotplug	2011-08-03 11:10:17.044901692 +0100
+@@ -28,6 +28,8 @@
+   . /etc/sysconfig/gpsd
+   GPSD_OPTIONS=$OPTIONS
+   GPSD_SOCKET=$CONTROL_SOCKET
++elif [ -r /etc/rc.d/rc.gpsd.conf ]; then
++  . /etc/rc.d/rc.gpsd.conf
+ fi
+ 
+ if [ -n "$GPSD_OPTIONS" ]; then

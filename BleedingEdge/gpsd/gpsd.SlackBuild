@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
 # Slackware build script for gpsd
-# Copyright 2011 David Spencer, Baildon, West Yorkshire, UK
+
+# Copyright 2011 David Spencer, Baildon, West Yorkshire, U.K.
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -22,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=gpsd
-VERSION=${VERSION:-git}
+VERSION=${VERSION:-3.0dev}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -59,11 +60,14 @@ ENABLELIST=""
 set -- $(echo $ENABLE | sed 's/,/ /g')
 while [ "$1" != "" ]
 do
-  if [[ "$1" =~ '=' ]]; then
+  case "$1" in
+  *=* )
     ENABLELIST+=" $1"
-  else
+    ;;
+  * )
     ENABLELIST+=" $1=yes"
-  fi
+    ;;
+  esac
   shift
 done
 DISABLELIST=""
@@ -85,9 +89,7 @@ chmod -R u+w,go+r-w,a-s .
 
 # Fixes fixes fixes and fixes
 patch -p1 < $CWD/gpsd-compiler_flags.patch
-patch -p1 < $CWD/gpsd-link_paths.patch
-patch -p1 < $CWD/gpsd-pkgconfig.patch
-patch -p1 < $CWD/gpsd-wrapper_conf.patch
+patch -p1 < $CWD/gpsd-hotplug_conf.patch
 
 CFLAGS=$SLKCFLAGS \
 scons \
@@ -102,6 +104,14 @@ scons \
   --implicit-deps-unchanged \
   install
 
+# Remove empty man pages
+if [ ! -s $PKG/usr/man/man1/gegps.1 ]; then
+  rm $PKG/usr/man/man1/gegps.1
+fi
+if [ ! -s $PKG/usr/man/man8/gpsdctl.8 ]; then
+  rm $PKG/usr/man/man8/gpsdctl.8
+fi
+
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 for i in $(find $PKG/usr/man -type l) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
@@ -114,8 +124,6 @@ install -D -m 0644 packaging/X11/gpsd-logo.png \
 
 install -D -m 0755 gpsd.hotplug \
   $PKG/lib/udev/gpsd.hotplug
-install -D -m 0755 gpsd.hotplug.wrapper \
-  $PKG/lib/udev/gpsd.hotplug.wrapper
 mkdir -p $PKG/etc/udev/rules.d
 cat gpsd.rules | \
   sed 's/^ATTRS/#&/' \
