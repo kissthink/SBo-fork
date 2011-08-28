@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # Slackware build script for Luminance HDR
+
 # Copyright 2011 David Spencer, Baildon, West Yorkshire, UK
 # All rights reserved.
 #
@@ -22,8 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=luminance-hdr
-DIRNAM=LuminanceHDR
-VERSION=${VERSION:-2.0.2}
+VERSION=${VERSION:-2.1.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -60,9 +60,9 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf ${DIRNAM}-${VERSION}
+rm -rf ${PRGNAM}-${VERSION}
 tar xvf $CWD/${PRGNAM}-${VERSION}.tar.gz
-cd ${DIRNAM}-${VERSION}
+cd ${PRGNAM}-${VERSION}
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
