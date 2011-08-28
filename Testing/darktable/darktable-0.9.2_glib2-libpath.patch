@@ -1,0 +1,215 @@
+diff -u -r darktable-0.9.2/cmake/modules/FindGTK2.cmake darktable-0.9.2-patched/cmake/modules/FindGTK2.cmake
+--- darktable-0.9.2/cmake/modules/FindGTK2.cmake	2011-08-24 10:20:29.000000000 +0100
++++ darktable-0.9.2-patched/cmake/modules/FindGTK2.cmake	2011-08-28 16:33:56.757616595 +0100
+@@ -28,6 +28,8 @@
+ #
+ #   GTK2_DEBUG - Enables verbose debugging of the module
+ #   GTK2_SKIP_MARK_AS_ADVANCED - Disable marking cache variables as advanced
++#   GTK2_ADDITIONAL_SUFFIXES - Allows defining additional directories to
++#                              search for include files
+ #
+ #=================
+ # Example Usage:
+@@ -61,13 +63,28 @@
+ # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ # See the License for more information.
+ #=============================================================================
+-# (To distributed this file outside of CMake, substitute the full
++# (To distribute this file outside of CMake, substitute the full
+ #  License text for the above reference.)
+ 
+-# Version 0.9 (2/11/2010)
+-#  * Added check for library gtk-quartz and gdk-quartz 
+-#  * Get module working under MacOSX ports by adding /opt/local/include /opt/local/lib
+-#  * Skip add of -NOTFOUND library ti GTK2_LIBRARIES for gdk-xxx and gtk-xxx
++# Version 1.3 (11/9/2010) (CMake 2.8.4)
++#   * 11429: Add support for detecting GTK2 built with Visual Studio 10.
++#            Thanks to Vincent Levesque for the patch.
++
++# Version 1.2 (8/30/2010) (CMake 2.8.3)
++#   * Merge patch for detecting gdk-pixbuf library (split off
++#     from core GTK in 2.21).  Thanks to Vincent Untz for the patch
++#     and Ricardo Cruz for the heads up.
++# Version 1.1 (8/19/2010) (CMake 2.8.3)
++#   * Add support for detecting GTK2 under macports (thanks to Gary Kramlich)
++# Version 1.0 (8/12/2010) (CMake 2.8.3)
++#   * Add support for detecting new pangommconfig.h header file
++#     (Thanks to Sune Vuorela & the Debian Project for the patch)
++#   * Add support for detecting fontconfig.h header
++#   * Call find_package(Freetype) since it's required
++#   * Add support for allowing users to add additional library directories
++#     via the GTK2_ADDITIONAL_SUFFIXES variable (kind of a future-kludge in
++#     case the GTK developers change versions on any of the directories in the
++#     future).
+ # Version 0.8 (1/4/2010)
+ #   * Get module working under MacOSX fink by adding /sw/include, /sw/lib
+ #     to PATHS and the gobject library
+@@ -135,13 +152,15 @@
+     endif()
+ 
+     set(_relatives
+-        # FIXME
++        # If these ever change, things will break.
++        ${GTK2_ADDITIONAL_SUFFIXES}
+         glibmm-2.4
+         glib-2.0
+         atk-1.0
+         atkmm-1.6
+         cairo
+         cairomm-1.0
++        gdk-pixbuf-2.0
+         gdkmm-2.4
+         giomm-2.4
+         gtk-2.0
+@@ -166,24 +185,18 @@
+ 
+     find_path(${_var} ${_hdr}
+         PATHS
+- # fix for Ubuntu >= 11.04 (Natty Narwhal)
+- /usr/lib/i386-linux-gnu/
+- /usr/lib/x86_64-linux-gnu/
+- # end fix for Ubuntu >= 11.04 (Natty Narwhal)
+-        # look in debian/ubuntu multi-arch path (needs cmake >= 2.85~rc2)
+-        /usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}
+             /usr/local/lib64
+             /usr/local/lib
+             /usr/lib64
+             /usr/lib
+-      /opt/local/include
+-      /opt/local/lib
+             /opt/gnome/include
+             /opt/gnome/lib
+             /opt/openwin/include
+             /usr/openwin/lib
+             /sw/include
+             /sw/lib
++            /opt/local/include
++            /opt/local/lib
+             $ENV{GTKMM_BASEPATH}/include
+             $ENV{GTKMM_BASEPATH}/lib
+             [HKEY_CURRENT_USER\\SOFTWARE\\gtkmm\\2.4;Path]/include
+@@ -228,15 +241,16 @@
+ 
+     set(_library ${_lib})
+ 
+-    if(_expand_vc)
+-        # Add vc80/vc90 midfixes
++    if(_expand_vc AND MSVC)
++        # Add vc80/vc90/vc100 midfixes
+         if(MSVC80)
+             set(_library   ${_library}-vc80)
+-            set(_library_d ${_library}-d)
+         elseif(MSVC90)
+             set(_library   ${_library}-vc90)
+-            set(_library_d ${_library}-d)
++        elseif(MSVC10)
++            set(_library ${_library}-vc100)
+         endif()
++        set(_library_d ${_library}-d)
+     endif()
+ 
+     if(GTK2_DEBUG)
+@@ -294,7 +308,6 @@
+             /opt/gnome/lib64
+             /usr/openwin/lib
+             /usr/openwin/lib64
+-      /opt/local/lib
+             /sw/lib
+             $ENV{GTKMM_BASEPATH}/lib
+             [HKEY_CURRENT_USER\\SOFTWARE\\gtkmm\\2.4;Path]/lib
+@@ -319,22 +332,18 @@
+             if(NOT GTK2_SKIP_MARK_AS_ADVANCED)
+                 mark_as_advanced(${_var}_DEBUG)
+             endif()
+-            if(NOT ${${_var}} MATCHES ".+-NOTFOUND")
+-                set(GTK2_LIBRARIES ${GTK2_LIBRARIES} optimized ${${_var}} debug ${${_var}_DEBUG})
+-                set(GTK2_LIBRARIES ${GTK2_LIBRARIES} PARENT_SCOPE)
+-            endif()
++            set(GTK2_LIBRARIES ${GTK2_LIBRARIES} optimized ${${_var}} debug ${${_var}_DEBUG})
++            set(GTK2_LIBRARIES ${GTK2_LIBRARIES} PARENT_SCOPE)
+         endif()
+     else()
+         if(NOT GTK2_SKIP_MARK_AS_ADVANCED)
+             mark_as_advanced(${_var})
+         endif()
+-        if(NOT ${${_var}} MATCHES ".+-NOTFOUND")
+-            set(GTK2_LIBRARIES ${GTK2_LIBRARIES} ${${_var}})
+-            set(GTK2_LIBRARIES ${GTK2_LIBRARIES} PARENT_SCOPE)
+-            # Set debug to release
+-            set(${_var}_DEBUG ${${_var}})
+-            set(${_var}_DEBUG ${${_var}} PARENT_SCOPE)
+-        endif()
++        set(GTK2_LIBRARIES ${GTK2_LIBRARIES} ${${_var}})
++        set(GTK2_LIBRARIES ${GTK2_LIBRARIES} PARENT_SCOPE)
++        # Set debug to release
++        set(${_var}_DEBUG ${${_var}})
++        set(${_var}_DEBUG ${${_var}} PARENT_SCOPE)
+     endif()
+ endfunction(_GTK2_FIND_LIBRARY)
+ 
+@@ -407,6 +416,10 @@
+ # Find all components
+ #
+ 
++find_package(Freetype)
++list(APPEND GTK2_INCLUDE_DIRS ${FREETYPE_INCLUDE_DIRS})
++list(APPEND GTK2_LIBRARIES ${FREETYPE_LIBRARIES})
++
+ foreach(_GTK2_component ${GTK2_FIND_COMPONENTS})
+     if(_GTK2_component STREQUAL "gtk")
+         _GTK2_FIND_INCLUDE_DIR(GTK2_GLIB_INCLUDE_DIR glib.h)
+@@ -416,29 +429,32 @@
+         _GTK2_FIND_INCLUDE_DIR(GTK2_GOBJECT_INCLUDE_DIR gobject/gobject.h)
+         _GTK2_FIND_LIBRARY    (GTK2_GOBJECT_LIBRARY gobject false true)
+ 
++        _GTK2_FIND_INCLUDE_DIR(GTK2_GDK_PIXBUF_INCLUDE_DIR gdk-pixbuf/gdk-pixbuf.h)
++        _GTK2_FIND_LIBRARY    (GTK2_GDK_PIXBUF_LIBRARY gdk_pixbuf false true)
++
+         _GTK2_FIND_INCLUDE_DIR(GTK2_GDK_INCLUDE_DIR gdk/gdk.h)
+         _GTK2_FIND_INCLUDE_DIR(GTK2_GDKCONFIG_INCLUDE_DIR gdkconfig.h)
+-        _GTK2_FIND_LIBRARY    (GTK2_GDK_LIBRARY gdk-x11 false true)
+-        _GTK2_FIND_LIBRARY    (GTK2_GDK_LIBRARY gdk-win32 false true)
+-        _GTK2_FIND_LIBRARY    (GTK2_GDK_LIBRARY gdk-quartz false true)
+-
+         _GTK2_FIND_INCLUDE_DIR(GTK2_GTK_INCLUDE_DIR gtk/gtk.h)
+-        _GTK2_FIND_LIBRARY    (GTK2_GTK_LIBRARY gtk-x11 false true)
+-        _GTK2_FIND_LIBRARY    (GTK2_GTK_LIBRARY gtk-win32 false true)
+-        _GTK2_FIND_LIBRARY    (GTK2_GTK_LIBRARY gtk-quartz false true)
++
++        if(UNIX)
++            _GTK2_FIND_LIBRARY    (GTK2_GDK_LIBRARY gdk-x11 false true)
++            _GTK2_FIND_LIBRARY    (GTK2_GTK_LIBRARY gtk-x11 false true)
++        else()
++            _GTK2_FIND_LIBRARY    (GTK2_GDK_LIBRARY gdk-win32 false true)
++            _GTK2_FIND_LIBRARY    (GTK2_GTK_LIBRARY gtk-win32 false true)
++        endif()
+ 
+         _GTK2_FIND_INCLUDE_DIR(GTK2_CAIRO_INCLUDE_DIR cairo.h)
+         _GTK2_FIND_LIBRARY    (GTK2_CAIRO_LIBRARY cairo false false)
+ 
++        _GTK2_FIND_INCLUDE_DIR(GTK2_FONTCONFIG_INCLUDE_DIR fontconfig/fontconfig.h)
++
+         _GTK2_FIND_INCLUDE_DIR(GTK2_PANGO_INCLUDE_DIR pango/pango.h)
+         _GTK2_FIND_LIBRARY    (GTK2_PANGO_LIBRARY pango false true)
+ 
+         _GTK2_FIND_INCLUDE_DIR(GTK2_ATK_INCLUDE_DIR atk/atk.h)
+         _GTK2_FIND_LIBRARY    (GTK2_ATK_LIBRARY atk false true)
+ 
+-        #elseif(_GTK2_component STREQUAL "gdk_pixbuf")
+-        #_GTK2_FIND_INCLUDE_DIR(GTK2_GDKPIXBUF_INCLUDE_DIR gdk-pixbuf/gdk-pixbuf.h)
+-        #_GTK2_FIND_LIBRARY    (GTK2_GDKPIXBUF_LIBRARY gdk_pixbuf false true)
+ 
+     elseif(_GTK2_component STREQUAL "gtkmm")
+ 
+diff -u -r darktable-0.9.2/cmake/modules/FindGlib.cmake darktable-0.9.2-patched/cmake/modules/FindGlib.cmake
+--- darktable-0.9.2/cmake/modules/FindGlib.cmake	2011-08-24 10:20:29.000000000 +0100
++++ darktable-0.9.2-patched/cmake/modules/FindGlib.cmake	2011-08-28 16:16:17.605564329 +0100
+@@ -21,7 +21,7 @@
+ find_path(GlibConfig_INCLUDE_DIR
+   NAMES glibconfig.h
+   PATHS ${Glib_PKGCONF_INCLUDE_DIRS} /usr
+-  PATH_SUFFIXES lib/glib-2.0/include ../lib/glib-2.0/include
++  PATH_SUFFIXES lib${LIB_SUFFIX}/glib-2.0/include ../lib${LIB_SUFFIX}/glib-2.0/include
+ )
+ 
+ # Finally the library itself
