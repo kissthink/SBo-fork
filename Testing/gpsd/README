@@ -6,6 +6,8 @@ location, course, and velocity available to be queried on TCP port
 without contention or loss of data.  Applications that presently use
 gpsd include Viking and Kismet.
 
+To build gpsd requires scons.
+
 See README.build for some additional build options that might be useful.
 
 To enable automatic startup of gpsd at boot time, or when a GPS device is
