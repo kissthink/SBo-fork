@@ -11,3 +11,8 @@ config() {
   # Otherwise, we leave the .new copy for the admin to consider...
 }
 
+config etc/xjadeorc.new
+
+if [ -x /usr/bin/update-desktop-database ]; then
+  /usr/bin/update-desktop-database -q usr/share/applications >/dev/null 2>&1
+fi
