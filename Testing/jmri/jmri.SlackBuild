@@ -22,7 +22,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=jmri
-VERSION=${VERSION:-2.10}
+VERSION=${VERSION:-2.12}
 ARCH=i486  # due to certain embedded libraries
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
@@ -51,7 +51,8 @@ find . \
 
 mkdir -p $PKG/usr/bin
 cp -a \
-  DecoderPro InstallTest JmriDemo LocoTools PanelPro SoundPro cornwall \
+  DecoderPro DispatcherPro PanelPro SignalPro SoundPro \
+  InstallTest JmriDemo LocoTools cornwall \
   $PKG/usr/bin
 chmod 755 $PKG/usr/bin/*
 
@@ -90,8 +91,11 @@ cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 mkdir -p $PKG/usr/share/applications
 install -m 0644 -t $PKG/usr/share/applications \
   $CWD/DecoderPro.desktop \
+  $CWD/DispatcherPro.desktop \
   $CWD/PanelPro.desktop \
+  $CWD/SignalPro.desktop \
   $CWD/SoundPro.desktop
+
 mkdir -p $PKG/usr/share/pixmaps
 install -m 0644 -t $PKG/usr/share/pixmaps \
   $CWD/jmri.png
