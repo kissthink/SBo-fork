@@ -3,9 +3,11 @@
 # Written by Iskar Enev (<iskar.enev[@]gmail.com>)
 # Modified by the SlackBuilds.org project
 
+# Unofficially upversioned by David Spencer <baildon.research@googlemail.com>
+
 PRGNAM=aMule
-VERSION=${VERSION:-2.2.6}
-BUILD=${BUILD:-2}
+VERSION=${VERSION:-2.3.1rc2}
+BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
 # Automatically determine the architecture we're building on:
@@ -77,7 +79,9 @@ find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
 
 # All of the needed docs are already installed; we'll just move them to the
 # correct location 
-mv $PKG/usr/share/doc $PKG/usr
+mkdir -p $PKG/usr/doc
+mv $PKG/usr/share/doc/amule $PKG/usr/doc/$PRGNAM-$VERSION
+rmdir $PKG/usr/share/doc
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
