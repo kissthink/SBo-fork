@@ -1,21 +1,18 @@
 #!/bin/sh
+#
+# Written by Jockey S. Kyd (jockey dot kyd at gmail dot com)
+# Public domain
 
-# Slackware build script for task
-
-# Written by Zoran Stojakovic stojakovic.zoran@gmail.com
-
-PRGNAM=task
-VERSION=${VERSION:-1.9.3}
+PRGNAM=bigloo
+VERSION=3.6a
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
-# Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
-  case "$( uname -m )" in
+  case "$(uname -m)" in
     i?86) ARCH=i486 ;;
     arm*) ARCH=arm ;;
-    # Unless $ARCH is already set, use uname -m for all other archs:
-       *) ARCH=$( uname -m ) ;;
+       *) ARCH=$(uname -m) ;;
   esac
 fi
 
@@ -38,14 +35,13 @@ else
   LIBDIRSUFFIX=""
 fi
 
-set -e # Exit on most errors
-
+set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
-cd $PRGNAM-$VERSION
+rm -rf $PRGNAM$VERSION
+tar xvf $CWD/$PRGNAM$VERSION.tar.gz
+cd $PRGNAM$VERSION
 chown -R root:root .
 find . \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
@@ -53,28 +49,35 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+# fix canonical system name detected during configuration
+# e.g. x86_64-unknown-linux-gnu -> x86_64-slackware-linux-gnu
+sed -ri '/^(build|host)=/ s/`$/ | sed "s:-unknown-:-slackware-:"` /' \
+        autoconf/gcconfigureopt
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
   --prefix=/usr \
-  --libdir=/usr/lib${LIBDIRSUFFIX} \
-  --sysconfdir=/etc \
-  --localstatedir=/var \
-  --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --build=$ARCH-slackware-linux
+  --libdir=/usr/lib$LIBDIRSUFFIX \
+  --mandir=/usr/man/man1 \
+  --infodir=/usr/info
 
-make docdir=/usr/doc/$PRGNAM-$VERSION
-make docdir=/usr/doc/$PRGNAM-$VERSION install DESTDIR=$PKG
+make
+make install DESTDIR=$PKG
 
-find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
-  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+find $PKG -print0 | xargs -0 file \
+  | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null \
+  || true
 
+rm -f $PKG/usr/info/dir
+find $PKG/usr/info -type f -exec gzip -9 {} \;
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 
-cp -a \
-  AUTHORS COPYING ChangeLog INSTALL NEWS README README.build \
-  $PKG/usr/doc/$PRGNAM-$VERSION
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+cp COPYING ChangeLog INSTALL INSTALL.jvm LICENSE README \
+      $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
