@@ -1,7 +1,0 @@
-PRGNAM="xfce4-mixer"
-TYPE="git"
-URL="git://git.xfce.org/apps/xfce4-mixer"
-BRANCH="master"
-REVISION=""
-EXPORT="y"
-COMPRESS="xz"

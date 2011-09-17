@@ -1,7 +1,0 @@
-PRGNAM="lensfun"
-TYPE="svn"
-URL="svn://svn.berlios.de/lensfun/trunk"
-BRANCH=""
-REVISION=""
-EXPORT=""
-COMPRESS="bz2"
