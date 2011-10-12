@@ -6,17 +6,16 @@ location, course, and velocity available to be queried on TCP port
 without contention or loss of data.  Applications that presently use
 gpsd include Viking and Kismet.
 
-To build gpsd requires scons.
-
 See README.build for some additional build options that might be useful.
 
 To enable automatic startup of gpsd at boot time, or when a GPS device is
 connected via USB, you need to do the following three steps:
 
-1. Edit the file /etc/udev/rules.d/97-gpsd.rules and uncomment the line
-(or lines) beginning '#ATTRS' that corresponds to your GPS hardware.  To
-avoid confusion with other USB serial devices that you might have, do not
-uncomment lines that do not correspond to your GPS hardware.
+1. Edit the file /lib/udev/rules.d/97-gpsd.rules and uncomment the line
+(or lines) beginning '#ATTRS' that corresponds to your GPS hardware and
+save it in /etc/udev/rules.d/. To avoid confusion with other USB serial
+devices that you might have, do not uncomment lines that do not
+correspond to your GPS hardware.
 
 2. Make the file /etc/rc.d/rc.gpsd executable.
    chmod +x /etc/rc.d/rc.gpsd
