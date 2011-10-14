@@ -24,9 +24,11 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# Unofficially upversioned by David Spencer <baildon.research@googlemail.com>
+
 PRGNAM=hugin
-VERSION=2011.0.0
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-2011.2.0}
+BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -62,7 +64,8 @@ rm -rf $PKG
 mkdir -p $TMP $PKG
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.bz2
+# Gee, thanks for the bizarre tarball
+tar xvf $CWD/$PRGNAM-$VERSION.tar.bz2 |& grep -v 'unknown extended header'
 cd $PRGNAM-$VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
@@ -86,7 +89,7 @@ mv $PKG/usr/share/man $PKG/usr
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a AUTHORS COPYING ChangeLog INSTALL_cmake LICENCE_VIGRA README README_JP \
-  README_WINDOWS TODO $PKG/usr/doc/$PRGNAM-$VERSION
+  TODO $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
