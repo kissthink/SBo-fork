@@ -22,9 +22,11 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# Unofficially upversioned by David Spencer <baildon.research@googlemail.com>
+
 PRGNAM=NetworkManager
-VERSION=${VERSION:-0.8.4.0}
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-0.9.0}
+BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -87,6 +89,9 @@ CXXFLAGS="$SLKCFLAGS" \
 
 make
 make install DESTDIR=$PKG
+
+# Use 'netdev' group for NM usage
+sed -i "s/at_console=\"true\"/group=\"netdev\"/g" $PKG/etc/dbus-1/system.d/NetworkManager.conf
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
