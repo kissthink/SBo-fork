@@ -7,7 +7,7 @@
 # Unofficially upversioned by David Spencer <baildon.research@googlemail.com>
 
 PRGNAM=aMule
-VERSION=${VERSION:-2.3.1rc2}
+VERSION=${VERSION:-2.3.1}
 BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
