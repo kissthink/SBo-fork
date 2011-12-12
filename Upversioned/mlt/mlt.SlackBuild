@@ -31,7 +31,7 @@
 # Unofficially upversioned by David Spencer <baildon.research@googlemail.com>
 
 PRGNAM=mlt
-VERSION=${VERSION:-0.7.4}
+VERSION=${VERSION:-0.7.6}
 BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
