@@ -2,7 +2,7 @@
 
 # Slackware build script for grass
 
-# Copyright 2011 David Spencer, Baildon, West Yorkshire, UK
+# Copyright 2011 David Spencer, Baildon, West Yorkshire, U.K.
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=grass
-VERSION=${VERSION:-6.4.2RC1}
+VERSION=${VERSION:-6.4.2RC2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
