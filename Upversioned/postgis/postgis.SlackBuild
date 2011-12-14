@@ -22,9 +22,11 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# Unofficially upversioned by David Spencer <baildon.research@googlemail.com>
+
 PRGNAM=postgis
-VERSION=${VERSION:-1.5.2}
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-1.5.3}
+BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
