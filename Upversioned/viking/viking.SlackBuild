@@ -25,7 +25,7 @@
 # Unofficially upversioned by David Spencer <baildon.research@googlemail.com>
 
 PRGNAM=viking
-VERSION=${VERSION:-1.2.1}
+VERSION=${VERSION:-1.2.2}
 BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
