@@ -27,7 +27,7 @@
 # Unofficially upversioned by David Spencer <baildon.research@googlemail.com>
 
 PRGNAM=hugin
-VERSION=${VERSION:-2011.2.0}
+VERSION=${VERSION:-2011.4.0}
 BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
