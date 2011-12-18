@@ -8,7 +8,7 @@
 
 PRGNAM=perl-libintl
 VERSION=${VERSION:-1.16}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-2a}
 TAG=${TAG:-_SBo}
 
 # Automatically determine the architecture we're building on:
