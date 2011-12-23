@@ -1,7 +1,7 @@
 [Desktop Entry]
 Categories=Education;
-Exec=tv
-Icon=tv.png
-Name=TreeView
+Exec=gap4
+Icon=staden
+Name=Staden Package GAP4
 StartupNotify=false
 Type=Application
