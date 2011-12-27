@@ -1,6 +1,6 @@
-diff -u -r -N dokuwiki-2011-05-25_orig//conf/dokuwiki.php dokuwiki-2011-05-25_patched//conf/dokuwiki.php
---- dokuwiki-2011-05-25_orig//conf/dokuwiki.php	2011-05-26 17:56:52.000000000 +0100
-+++ dokuwiki-2011-05-25_patched//conf/dokuwiki.php	2011-05-30 12:52:05.991159894 +0100
+diff -u -r -N dokuwiki-rc2011-11-10_orig/conf/dokuwiki.php dokuwiki-rc2011-11-10_patched/conf/dokuwiki.php
+--- dokuwiki-rc2011-11-10_orig/conf/dokuwiki.php	2011-11-11 11:25:15.000000000 +0000
++++ dokuwiki-rc2011-11-10_patched/conf/dokuwiki.php	2011-12-27 18:50:42.663752587 +0000
 @@ -18,7 +18,7 @@
  $conf['lang']        = 'en';              //your language
  $conf['basedir']     = '';                //absolute dir from serveroot - blank for autodetection
@@ -8,17 +8,17 @@ diff -u -r -N dokuwiki-2011-05-25_orig//conf/dokuwiki.php dokuwiki-2011-05-25_pa
 -$conf['savedir']     = './data';          //where to store all the files
 +$conf['savedir']     = '/var/lib/dokuwiki/data';          //where to store all the files
  $conf['allowdebug']  = 0;                 //allow debug output, enable if needed 0|1
+ $conf['mediarevisions'] = 1;              //enable/disable media revisions
  
- /* Display Options */
-diff -u -r -N dokuwiki-2011-05-25_orig//inc/preload.php dokuwiki-2011-05-25_patched//inc/preload.php
---- dokuwiki-2011-05-25_orig//inc/preload.php	1970-01-01 01:00:00.000000000 +0100
-+++ dokuwiki-2011-05-25_patched//inc/preload.php	2011-05-30 12:52:05.991159894 +0100
+diff -u -r -N dokuwiki-rc2011-11-10_orig/inc/preload.php dokuwiki-rc2011-11-10_patched/inc/preload.php
+--- dokuwiki-rc2011-11-10_orig/inc/preload.php	1970-01-01 01:00:00.000000000 +0100
++++ dokuwiki-rc2011-11-10_patched/inc/preload.php	2011-12-27 18:50:42.663752587 +0000
 @@ -0,0 +1,2 @@
 +<?php
 +define('DOKU_CONF','/var/lib/dokuwiki/conf/');
-diff -u -r -N dokuwiki-2011-05-25_orig//install.php dokuwiki-2011-05-25_patched//install.php
---- dokuwiki-2011-05-25_orig//install.php	2011-05-26 17:56:53.000000000 +0100
-+++ dokuwiki-2011-05-25_patched//install.php	2011-05-30 12:57:26.651886494 +0100
+diff -u -r -N dokuwiki-rc2011-11-10_orig/install.php dokuwiki-rc2011-11-10_patched/install.php
+--- dokuwiki-rc2011-11-10_orig/install.php	2011-11-11 11:25:15.000000000 +0000
++++ dokuwiki-rc2011-11-10_patched/install.php	2011-12-27 18:50:42.664752553 +0000
 @@ -5,9 +5,12 @@
   * @author      Chris Smith <chris@jalakai.co.uk>
   */
@@ -33,16 +33,16 @@ diff -u -r -N dokuwiki-2011-05-25_orig//install.php dokuwiki-2011-05-25_patched/
  
  // check for error reporting override or set error reporting to sane values
  if (!defined('DOKU_E_LEVEL')) { error_reporting(E_ALL ^ E_NOTICE); }
-@@ -47,7 +50,7 @@
-     '2009-02-14'   => 'ec8c04210732a14fdfce0f7f6eead865',
+@@ -48,7 +51,7 @@
      '2009-12-25'   => '993c4b2b385643efe5abf8e7010e11f4',
      '2010-11-07'   => '7921d48195f4db21b8ead6d9bea801b8',
--    '2011-05-25'   => '4241865472edb6fa14a1227721008072',
-+    '2011-05-25'   => '9841b8559e4fd7811b4163629f1a5d3a',
+     '2011-05-25'   => '4241865472edb6fa14a1227721008072',
+-    '2011-11-10'   => 'b46ff19a7587966ac4df61cbab1b8b31',
++    '2011-11-10'   => '4553f1fb54ed26bc75225895f4666c59',
  );
  
  
-@@ -419,15 +422,15 @@
+@@ -420,15 +423,15 @@
  
      $dirs = array(
          'conf'      => DOKU_LOCAL,
