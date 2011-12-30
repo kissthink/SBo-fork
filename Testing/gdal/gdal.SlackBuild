@@ -1,5 +1,6 @@
 #!/bin/sh
 # Slackware build script for GDAL
+
 # Copyright 2009 Marco Cecchetti <mrc.ild@gmail.com>
 # All rights reserved.
 #
@@ -23,7 +24,7 @@
 # Maintained by David Spencer <baildon.research@googlemail.com>
 
 PRGNAM=gdal
-VERSION=${VERSION:-1.8.1}
+VERSION=${VERSION:-1.9.0RC1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -61,7 +62,7 @@ mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
 tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
-cd $PRGNAM-$VERSION
+cd $(echo $PRGNAM-$VERSION | sed 's/RC[0-9]*//')
 chown -R root:root .
 find . \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
