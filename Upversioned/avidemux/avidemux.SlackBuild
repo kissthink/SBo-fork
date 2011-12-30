@@ -76,6 +76,9 @@ if [ "$ARCH" = "x86_64" ]; then
   sed -i -e "s/Dir=\"lib\"/Dir=\"lib${LIBDIRSUFFIX}\"/" $(grep -lr 'Dir="lib"' .)
 fi
 
+# a little fix for recent x264 snapshots (x264 version 115)
+patch -p1 < $CWD/avidemux-2.5.4-x264-build115.patch
+
 mkdir build
 cd build
 
@@ -174,4 +177,3 @@ cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
-
