@@ -24,7 +24,7 @@
 # Maintained by David Spencer <baildon.research@googlemail.com>
 
 PRGNAM=gdal
-VERSION=${VERSION:-1.9.0RC1}
+VERSION=${VERSION:-1.9.0RC2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
