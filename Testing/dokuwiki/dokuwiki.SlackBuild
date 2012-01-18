@@ -1,7 +1,8 @@
 #!/bin/sh
 
 # Slackware build script for dokuwiki
-# Copyright 2011 David Spencer, Baildon, West Yorkshire, UK
+
+# Copyright 2011 David Spencer, Baildon, West Yorkshire, U.K.
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -22,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=dokuwiki
-VERSION=${VERSION:-rc2011-11-10}
+VERSION=${VERSION:-rc2011_11_10}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
