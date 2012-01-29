@@ -29,7 +29,7 @@
 PRGNAM=perl-test-number-delta
 SRCNAM=Test-Number-Delta
 VERSION=1.03
-BUILD=${BUILD:-1a}
+BUILD=${BUILD:-1curr}
 TAG=${TAG:-_SBo}
 
 # Automatically determine the architecture we're building on:
