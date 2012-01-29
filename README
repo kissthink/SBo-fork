@@ -3,11 +3,10 @@ This is a fork of the SlackBuilds.org repository.
 The 'master' branch tracks SBo.
 
 The 'fork' branch contains the following additional subdirectories:
-  Testing        beta versions of SBo SlackBuilds that I maintain
-                 (note: when ready for submission to SBo they will
-                 be copied to the relevant SBo subdirectory)
-  Upversioned    version bumps of other peoples' SlackBuilds
-  Unmaintained   old and obscure SlackBuilds that may still be useful
+  Current/       SlackBuilds adapted for use on Slackware -current
+  Testing/       Beta versions of SBo SlackBuilds that I maintain
+  Upversioned/   Version bumps of other peoples' SlackBuilds
+  Unmaintained/  Old and obscure SlackBuilds that may still be useful
 
 See http://slackbuilds.org/howto/ for instructions on 
 how to use the contents of this repository.
