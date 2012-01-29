@@ -27,7 +27,7 @@
 
 PRGNAM=perl-extutils-pkgconfig
 VERSION=${VERSION:-1.12}
-BUILD=${BUILD:-1a}
+BUILD=${BUILD:-1curr}
 TAG=${TAG:-_SBo}
 
 SRCNAM=ExtUtils-PkgConfig
