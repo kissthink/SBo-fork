@@ -27,7 +27,7 @@
 
 PRGNAM=perl-gtk2
 VERSION=${VERSION:-1.223}
-BUILD=${BUILD:-1a}
+BUILD=${BUILD:-1curr}
 TAG=${TAG:-_SBo}
 
 SRCNAM=Gtk2
