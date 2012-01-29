@@ -8,7 +8,7 @@
 
 PRGNAM=perl-event
 VERSION=${VERSION:-1.13}
-BUILD=${BUILD:-2a}
+BUILD=${BUILD:-2curr}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
