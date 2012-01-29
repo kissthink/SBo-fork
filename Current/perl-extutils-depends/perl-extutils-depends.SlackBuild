@@ -27,7 +27,7 @@
 
 PRGNAM=perl-extutils-depends
 VERSION=${VERSION:-0.302}
-BUILD=${BUILD:-1a}
+BUILD=${BUILD:-1curr}
 TAG=${TAG:-_SBo}
 
 SRCNAM=ExtUtils-Depends
