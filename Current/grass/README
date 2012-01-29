@@ -5,6 +5,7 @@ and visualization.  GRASS is an official project of the Open Source
 Geospatial Foundation.
 
 GRASS requires proj, gdal, numpy and wxPython.
+On Slackware -current, GRASS also requires libtirpc. 
 
 The following optional dependencies may be enabled:
   blas
