@@ -24,7 +24,7 @@
 
 PRGNAM=perl-Switch
 VERSION=${VERSION:-2.16}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-1curr}
 TAG=${TAG:-_SBo}
 
 SRCNAM="$(printf $PRGNAM | cut -d- -f2-)"
