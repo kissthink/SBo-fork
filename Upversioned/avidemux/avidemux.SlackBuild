@@ -26,8 +26,8 @@
 # project will use in the future.   No additional license terms added
 
 PRGNAM=avidemux
-VERSION=${VERSION:-2.5.5}
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-2.5.6}
+BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
 # Automatically determine the architecture we're building on:
@@ -75,9 +75,6 @@ if [ "$ARCH" = "x86_64" ]; then
   # Some paths are incorrectly hardcoded to "lib":
   sed -i -e "s/Dir=\"lib\"/Dir=\"lib${LIBDIRSUFFIX}\"/" $(grep -lr 'Dir="lib"' .)
 fi
-
-# a little fix for recent x264 snapshots (x264 version 115)
-patch -p1 < $CWD/avidemux-2.5.4-x264-build115.patch
 
 mkdir build
 cd build
