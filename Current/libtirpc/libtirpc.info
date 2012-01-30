@@ -1,0 +1,14 @@
+PRGNAM="libtirpc"
+VERSION="0.2.2"
+HOMEPAGE="http://libtirpc.sourceforge.net/"
+DOWNLOAD="\
+  http://downloads.sourceforge.net/libtirpc/libtirpc-0.2.2.tar.bz2 \
+  http://ponce.cc/slackware/sources/repo/rpcnis-headers.tar.bz2"
+MD5SUM="\
+  74c41c15c2909f7d11d9c7bfa7db6273 \
+  635c7c9b6c962246a50a579ddbdbb95c"
+DOWNLOAD_x86_64=""
+MD5SUM_x86_64=""
+MAINTAINER="ponce"
+EMAIL="matteo.bernardini@gmail.com"
+APPROVED=""
