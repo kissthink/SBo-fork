@@ -1,24 +1,24 @@
-diff -u -r -N dokuwiki-rc2011-11-10_orig/conf/dokuwiki.php dokuwiki-rc2011-11-10_patched/conf/dokuwiki.php
---- dokuwiki-rc2011-11-10_orig/conf/dokuwiki.php	2011-11-11 11:25:15.000000000 +0000
-+++ dokuwiki-rc2011-11-10_patched/conf/dokuwiki.php	2011-12-27 18:50:42.663752587 +0000
-@@ -18,7 +18,7 @@
- $conf['lang']        = 'en';              //your language
+diff -u -r -N dokuwiki-2012-01-25_orig/conf/dokuwiki.php dokuwiki-2012-01-25_new/conf/dokuwiki.php
+--- dokuwiki-2012-01-25_orig/conf/dokuwiki.php	2012-01-25 19:39:32.000000000 +0000
++++ dokuwiki-2012-01-25_new/conf/dokuwiki.php	2012-02-05 10:41:33.916266797 +0000
+@@ -19,7 +19,7 @@
  $conf['basedir']     = '';                //absolute dir from serveroot - blank for autodetection
  $conf['baseurl']     = '';                //URL to server including protocol - blank for autodetect
+ $conf['cookiedir']   = '';                //Cookie path. Leave blank for using baseurl.
 -$conf['savedir']     = './data';          //where to store all the files
 +$conf['savedir']     = '/var/lib/dokuwiki/data';          //where to store all the files
  $conf['allowdebug']  = 0;                 //allow debug output, enable if needed 0|1
  $conf['mediarevisions'] = 1;              //enable/disable media revisions
  
-diff -u -r -N dokuwiki-rc2011-11-10_orig/inc/preload.php dokuwiki-rc2011-11-10_patched/inc/preload.php
---- dokuwiki-rc2011-11-10_orig/inc/preload.php	1970-01-01 01:00:00.000000000 +0100
-+++ dokuwiki-rc2011-11-10_patched/inc/preload.php	2011-12-27 18:50:42.663752587 +0000
+diff -u -r -N dokuwiki-2012-01-25_orig/inc/preload.php dokuwiki-2012-01-25_new/inc/preload.php
+--- dokuwiki-2012-01-25_orig/inc/preload.php	1970-01-01 01:00:00.000000000 +0100
++++ dokuwiki-2012-01-25_new/inc/preload.php	2012-02-05 10:32:56.492617256 +0000
 @@ -0,0 +1,2 @@
 +<?php
 +define('DOKU_CONF','/var/lib/dokuwiki/conf/');
-diff -u -r -N dokuwiki-rc2011-11-10_orig/install.php dokuwiki-rc2011-11-10_patched/install.php
---- dokuwiki-rc2011-11-10_orig/install.php	2011-11-11 11:25:15.000000000 +0000
-+++ dokuwiki-rc2011-11-10_patched/install.php	2011-12-27 18:50:42.664752553 +0000
+diff -u -r -N dokuwiki-2012-01-25_orig/install.php dokuwiki-2012-01-25_new/install.php
+--- dokuwiki-2012-01-25_orig/install.php	2012-01-25 19:39:33.000000000 +0000
++++ dokuwiki-2012-01-25_new/install.php	2012-02-05 10:45:00.738539707 +0000
 @@ -5,9 +5,12 @@
   * @author      Chris Smith <chris@jalakai.co.uk>
   */
@@ -33,37 +33,41 @@ diff -u -r -N dokuwiki-rc2011-11-10_orig/install.php dokuwiki-rc2011-11-10_patch
  
  // check for error reporting override or set error reporting to sane values
  if (!defined('DOKU_E_LEVEL')) { error_reporting(E_ALL ^ E_NOTICE); }
-@@ -48,7 +51,7 @@
-     '2009-12-25'   => '993c4b2b385643efe5abf8e7010e11f4',
+@@ -49,7 +52,7 @@
      '2010-11-07'   => '7921d48195f4db21b8ead6d9bea801b8',
      '2011-05-25'   => '4241865472edb6fa14a1227721008072',
--    '2011-11-10'   => 'b46ff19a7587966ac4df61cbab1b8b31',
-+    '2011-11-10'   => '4553f1fb54ed26bc75225895f4666c59',
+     '2011-11-10'   => 'b46ff19a7587966ac4df61cbab1b8b31',
+-    '2012-01-25'   => '72c083c73608fc43c586901fd5dabb74',
++    '2012-01-25'   => '26b1b89de3d373fff23fbb46f339523a',
  );
  
  
-@@ -420,15 +423,15 @@
+@@ -421,17 +424,17 @@
  
      $dirs = array(
-         'conf'      => DOKU_LOCAL,
--        'data'      => DOKU_INC.'data',
--        'pages'     => DOKU_INC.'data/pages',
--        'attic'     => DOKU_INC.'data/attic',
--        'media'     => DOKU_INC.'data/media',
--        'meta'      => DOKU_INC.'data/meta',
--        'cache'     => DOKU_INC.'data/cache',
--        'locks'     => DOKU_INC.'data/locks',
--        'index'     => DOKU_INC.'data/index',
--        'tmp'       => DOKU_INC.'data/tmp'
-+        'data'      => DOKU_DATA,
-+        'pages'     => DOKU_DATA.'pages',
-+        'attic'     => DOKU_DATA.'attic',
-+        'media'     => DOKU_DATA.'media',
-+        'meta'      => DOKU_DATA.'meta',
-+        'cache'     => DOKU_DATA.'cache',
-+        'locks'     => DOKU_DATA.'locks',
-+        'index'     => DOKU_DATA.'index',
-+        'tmp'       => DOKU_DATA.'tmp'
+         'conf'        => DOKU_LOCAL,
+-        'data'        => DOKU_INC.'data',
+-        'pages'       => DOKU_INC.'data/pages',
+-        'attic'       => DOKU_INC.'data/attic',
+-        'media'       => DOKU_INC.'data/media',
+-        'media_attic' => DOKU_INC.'data/media_attic',
+-        'media_meta'  => DOKU_INC.'data/media_meta',
+-        'meta'        => DOKU_INC.'data/meta',
+-        'cache'       => DOKU_INC.'data/cache',
+-        'locks'       => DOKU_INC.'data/locks',
+-        'index'       => DOKU_INC.'data/index',
+-        'tmp'         => DOKU_INC.'data/tmp'
++        'data'        => DOKU_DATA,
++        'pages'       => DOKU_DATA.'pages',
++        'attic'       => DOKU_DATA.'attic',
++        'media'       => DOKU_DATA.'media',
++        'media_attic' => DOKU_DATA.'media_attic',
++        'media_meta'  => DOKU_DATA.'media_meta',
++        'meta'        => DOKU_DATA.'meta',
++        'cache'       => DOKU_DATA.'cache',
++        'locks'       => DOKU_DATA.'locks',
++        'index'       => DOKU_DATA.'index',
++        'tmp'         => DOKU_DATA.'tmp'
      );
  
      $ok = true;
