@@ -25,9 +25,11 @@
 # Thanks to rworkman for the additional code and script cleanups
 # and to Daniel de Kok and Alan_Hicks for their comments.
 
+# Unofficially upversioned by David Spencer <baildon.research@googlemail.com>
+
 PRGNAM=GoogleEarth
-VERSION=${VERSION:-6.0.3.2197}
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-6.2.1.6014}
+BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
 CWD=$(pwd)
@@ -38,21 +40,21 @@ OUTPUT=${OUTPUT:-/tmp}
 # No flags/configure needed as it is just a binary repackaging.
 ARCH=i486
 
+# The Google-supplied rpm and deb now install to this directory:
+OPTPATH=/opt/google/earth/free
+
 set -e # Exit on most errors.
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
-cd $TMP
-sh $CWD/${PRGNAM}Linux.bin --noexec --target $PKG/opt/$PRGNAM ; sync
-cd $PKG/opt/$PRGNAM
-  tar xf googleearth-data.tar
-  tar xf googleearth-linux-x86.tar
-  rm googleearth-data.tar googleearth-linux-x86.tar
-cd -
+
+cd $PKG
+ar -x $CWD/google-earth-stable_current_i386.deb
+tar xvf data.tar.lzma ./opt/
+rm data.tar.lzma control.tar.gz debian-binary
 
 # Set the ownership and permissions correctly
-cd $PKG
-chown -R root:root . 
+chown -R root:root .
 find . \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
  -exec chmod 755 {} \; -o \
@@ -63,17 +65,11 @@ find . \
 find . \( -name "*.png" -o -name "*.kml" -o -name "*.xml" \) \
   -exec chmod 0644 {} \;
 
-mv $PKG/opt/$PRGNAM/bin/googleearth $PKG/opt/$PRGNAM
-rmdir $PKG/opt/$PRGNAM/bin
-
-#find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
-#  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
-
 # Let's use the information from the included postinstall.sh
 # script to create menu entry and mime stuff
 DESKTOPFILE=$PKG/usr/share/applications/GoogleEarth.desktop
 MIMEFILE=$PKG/usr/share/mime/googleearth-mimetypes.xml
-mkdir -p $PKG/usr/share/{applications,mime,pixmaps} $PKG/usr/bin
+mkdir -p $PKG/usr/share/{applications,mime}
 
 cat > $DESKTOPFILE << EOF
 [Desktop Entry]
@@ -115,24 +111,29 @@ EOF
 
 # Let's take care of documentation
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-mv $PKG/opt/$PRGNAM/{README.linux,gpl.txt} $PKG/usr/doc/$PRGNAM-$VERSION
+mv $PKG/$OPTPATH/gpl.txt $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 # Make some needed symlinks in the package
-cd $PKG/usr/share/pixmaps
-  ln -s /opt/$PRGNAM/googleearth-icon.png .
-  ln -s /opt/$PRGNAM/googleearth.xpm .
-  cd $PKG/usr/bin 
-  ln -s /opt/$PRGNAM/googleearth .
-cd -
+mkdir -p $PKG/usr/share/pixmaps
+ln -s \
+  $OPTPATH/googleearth-icon.png \
+  $OPTPATH/googleearth.xpm \
+  $PKG/usr/share/pixmaps
+mkdir -p $PKG/usr/bin
+ln -s \
+  $OPTPATH/googleearth \
+  $OPTPATH/google-earth \
+  $PKG/usr/bin
+
+for i in 16 22 24 32 48 64 128 256; do
+  mkdir -p $PKG/usr/share/icons/hicolor/${i}x${i}/apps/
+  cp $PKG/$OPTPATH/product_logo_${i}.png $PKG/usr/share/icons/hicolor/${i}x${i}/apps/googleearth.png
+done
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
-
-# Clean up files that we no longer need.
-rm $PKG/opt/$PRGNAM/{preuninstall,setup,postinstall}.sh
-rm -rf $PKG/opt/$PRGNAM/setup.data
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
