@@ -4,6 +4,7 @@
 *.tgz
 *.tar.bz2
 *.tar.xz
+*.deb
 *.sbopkg
 *~
 .directory

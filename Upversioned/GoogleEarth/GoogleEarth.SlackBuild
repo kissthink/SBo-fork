@@ -73,18 +73,19 @@ mkdir -p $PKG/usr/share/{applications,mime}
 
 cat > $DESKTOPFILE << EOF
 [Desktop Entry]
+Version=1.0
 Name=Google Earth
 GenericName=3D planet viewer
-Comment=Explore, search, and discover the planet
-Exec=googleearth %f
+Comment=Explore, search and discover the planet
+Exec=google-earth %f
 Terminal=false
 MultipleArgs=false
+Icon=google-earth
 Type=Application
-Icon=googleearth-icon
-Categories=Network;
-MimeType=application/vnd.google-earth.kml+xml;application/vnd.google-earth.kmz;application/earthviewer;application/keyhole;
-
+Categories=Application;Network
+MimeType=application/vnd.google-earth.kml+xml;application/vnd.google-earth.kmz;application/earthviewer;application/keyhole
 EOF
+
 cat > $MIMEFILE << EOF
 <?xml version="1.0"?>
 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
@@ -106,7 +107,6 @@ cat > $MIMEFILE << EOF
     <comment>Keyhole Markup Language data</comment>
   </mime-type>
 </mime-info>
-
 EOF
 
 # Let's take care of documentation
@@ -117,18 +117,17 @@ cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 # Make some needed symlinks in the package
 mkdir -p $PKG/usr/share/pixmaps
 ln -s \
-  $OPTPATH/googleearth-icon.png \
-  $OPTPATH/googleearth.xpm \
-  $PKG/usr/share/pixmaps
+  $OPTPATH/product_logo_32.xpm \
+  $PKG/usr/share/pixmaps/google-earth.xpm
 mkdir -p $PKG/usr/bin
 ln -s \
-  $OPTPATH/googleearth \
   $OPTPATH/google-earth \
+  $OPTPATH/googleearth \
   $PKG/usr/bin
 
 for i in 16 22 24 32 48 64 128 256; do
   mkdir -p $PKG/usr/share/icons/hicolor/${i}x${i}/apps/
-  cp $PKG/$OPTPATH/product_logo_${i}.png $PKG/usr/share/icons/hicolor/${i}x${i}/apps/googleearth.png
+  cp $PKG/$OPTPATH/product_logo_${i}.png $PKG/usr/share/icons/hicolor/${i}x${i}/apps/google-earth.png
 done
 
 mkdir -p $PKG/install
