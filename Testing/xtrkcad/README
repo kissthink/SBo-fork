@@ -1,5 +1,3 @@
-NOTE: This SlackBuild script is UNMAINTAINED.
-
 XTrkCAD is a CAD program for designing model railroad layouts. 
 You can design layouts in any scale and gauge. XTrkCAD has
 predefined libraries for many popular brands of track.  You can
@@ -7,10 +5,7 @@ test your design by running trains, and you can print the
 design in a scale of your choice.  When printed in 1:1 scale 
 the printout can be used as a template for track laying.
 
+XTrkCAD requires webkit.
+
 Beginner's Tutorial: http://www.xtrkcad.org/Wikka/BeginnerTutorial
 User Guide:          http://www.xtrkcad.org/Wikka/UserGuide
-
-libgtkhtml is required.  An unmaintained SlackBuild is available
-from the 'unmaintained' directory of this repository.
-
-graphviz is an optional dependency.
