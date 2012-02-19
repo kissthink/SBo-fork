@@ -22,10 +22,11 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# Unofficially upversioned by David Spencer <baildon.research@googlemail.com>
 
 PRGNAM=reaver
-VERSION=${VERSION:-1.3}
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-1.4}
+BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -82,12 +83,16 @@ cd src
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
   --build=$ARCH-slackware-linux
 
 make
 # make install is b0rked
 mkdir -p $PKG/usr/sbin
-install -o 0 -g 0 -m 0755 walsh $PKG/usr/sbin/walsh
+install -o 0 -g 0 -m 0755 wash $PKG/usr/sbin/wash
 install -o 0 -g 0 -m 0755 reaver $PKG/usr/sbin/reaver
 # not really sure how to handle future reaver.db updates
 mkdir -p $PKG/etc/reaver
