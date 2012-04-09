@@ -1,3 +1,162 @@
+Mon Apr  2 22:13:23 UTC 2012
+academic/qhull: Updated for version 2012.1.
+academic/wxmacmolplt: Updated for version 7.4.3.
+audio/SuperCollider: Updated for version 3.4.4.
+desktop/maitreya: Updated for version 6.0.5.
+desktop/slock: Updated for version 1.0.
+development/apache-ant: Updated for version 1.8.3.
+development/freetds: Updated for version 0.91.
+development/wxHexEditor: Updated for version 0.20.
+games/cuyo: Updated for version 2.0.0.
+games/jag: Updated for version 0.3.2.
+games/speed-dreams: Updated for version 2.0.0_rc1_r4420
+graphics/dia: Updated for version 0.97.2.
+graphics/qrencode: Updated for version 3.2.0.
+libraries/CherryPy: Updated for version 3.2.2 new maintainer.
+libraries/PythonDaap: Removed at request of maintainer.
+libraries/libaacs: Updated for version 0.3.1.
+libraries/libbluray: Updated for version 0.2.2.
+multimedia/makemkv: Updated for version 1.7.3.
+multimedia/vkeybd: Updated for version 0.1.18d.
+network/opera: Updated for 11.62.
+office/task: Updated for version 2.0.0.
+python/Mako: Updated for version 0.6.2 new maintainer.
+python/cssutils: Updated for version 0.9.9.
+python/lxml: Updated for version 2.3.4.
+system/dar: Updated for version 2.4.4.
+system/eventlog: Updated for version 0.2.12.
+system/google-droid-fonts: Fixed download link
+system/nvidia-driver: Updated for version 295.33.
+system/nvidia-kernel: Updated for version 295.33.
+system/rsyslog: Updated for version 5.8.9.
+system/safecopy: Updated for version 1.7.
++--------------------------+
+Fri Mar 30 06:25:47 UTC 2012
+academic/gtypist: Updated for version 2.9.1.
+academic/mathomatic: Updated for version 15.8.1.
+desktop/dmenu: Updated for version 4.5.
+desktop/gnome-colors: Added shiki-colors themes.
+desktop/xvkbd: Updated for version 3.3.
+development/arduino: Added new icon.
+development/kicad-doc: Updated for version bzr_20120220.
+development/kicad-library: Updated for version bzr_20120219.
+development/kicad: Updated for version bzr_20120205.
+development/lua: Updated for version 5.1.5.
+development/mono: Updated for version 2.10.9.
+development/netbeans: Updated for version 7.1.1.
+development/nexus: Updated for version 2.0.
+development/teensy_loader_cli: Updated info file.
+games/0ad-data: Updated for version r11339.
+games/0ad: Updated for version r11339.
+games/UrbanTerror: Updated for version 4.1.1.
+games/kildclient: Updated for version 2.11.1.
+games/knights: Updated for version 2.4.1.
+games/wesnoth: Updated for version 1.10.1.
+graphics/fritzing: Updated for version 0.7.0b.
+graphics/yagf: Updated for version 0.9.
+libraries/argparse: New maintainer.
+libraries/darcsver: Updated for version 1.7.4 new maintainer.
+libraries/foolscap: Updated for version 0.6.3 new maintainer.
+libraries/libgdiplus: Updated for version 2.10.9.
+libraries/xmlrpc-c: Updated for version 20120215.
+libraries/zbase32: New maintainer and build clean up.
+libraries/zfec: New maintainer and build clean up.
+misc/dos2unix: Updated for version 5.3.2.
+multimedia/google-talkplugin: Updated for version 2.6.1.0.
+multimedia/umplayer: Updated for version 0.97.
+network/hydra: Updated for version 7.2.
+network/mew: Updated for version 6.4.50.
+network/msmtp: Updated for version 1.4.27.
+network/nbd: Updated for version 3.0.
+network/pidgin-privacy-please: Updated for version 0.7.1.
+network/smb4k: Updated for version 1.0.1.
+office/coolreader: Updated for version 3.0.56.
+python/pyOpenSSL: Updated for version 0.13 new maintainer.
+python/pycryptopp: New maintainer and build clean up.
+python/python-twisted: Updated for version 12.0.0 new maintainer.
+python/pyutil: Updated for version 1.8.4 new maintainer.
+ruby/gem2tgz: Updated for new source.
+system/burp: Updated for version 1.3.0.
+system/clamav: Updated for version 0.97.4.
+system/di: Updated for version 4.31.
+system/dina-font: Updated download link.
+system/parallel: Updated for version 20120322.
+system/redis: Updated for version 2.4.7 new maintainer.
+system/roxterm: Updated for version 2.5.3.
+system/terminator: Updated for version 0.96.
+system/vifm: Updated for version 0.7.1 new maintainer.
++--------------------------+
+Thu Mar 29 15:19:57 UTC 2012
+academic/copasi: Fix desktop file (BUILD bump)
+academic/gerbv: Updated for version 2.6.0.
+academic/octave-forge: Fixed VERSION strings (s,-,_,g)
+audio/nas: Added (Network Audio System)
+audio/phat: Contact info updated.
+desktop/cwp: Updated for version 1.5.9.
+desktop/slack-wallpapers: Added (Slackware wallpapers)
+desktop/smooth-tasks: Fixed VERSION string (s,-,_,)
+desktop/spectrwm: Added (small dynamic tiling window manager)
+desktop/subtle: Fixed VERSION in .info file
+development/apache-ivy: New download URL.
+development/bashdb:  Fixed VERSION string (s,-,_,g)
+development/cudatoolkit: Updated for version 4.1.28.
+development/google-appengine-pysdk: Updated for version 1.6.2.
+development/rapidsvn: Fixed VERSION string in .info file
+development/viewvc: Updated for version 1.1.13.
+games/darkplaces: Small fix for building with i686 ARCH.
+games/firestorm: Added (alternative client for SecondLife)
+games/qmc2: Updated for version 0.35.
+graphics/LDraw_data: Updated for version 201102.
+graphics/aeskulap: Fixed VERSION strings (s,-,_,g)
+graphics/fbpic: Added (display an image on the framebuffer)
+graphics/fontmatrix: New maintainer.
+graphics/inkscape: Updated for version 0.48.3.
+graphics/leocad_pieces: Updated for version 5243.
+graphics/librecad: Updated for version 1.0.1.
+libraries/Botan: Include the python wrapper (BUILD bump)
+libraries/cfitsio: Updated for version 3.29.
+libraries/libmemcached: Updated for version 1.0.4.
+libraries/rrdtool: Updated for version 1.4.7.
+libraries/tbb: Added (Intel Threading Building Blocks)
+libraries/xalan-c: New download URL.
+libraries/yaz: Updated for version 4.2.25.
+misc/ibus-chewing: Updated for version 1.3.10.
+misc/iscan-proprietary-drivers: Fixed VERSION in .info file
+misc/par2cmdline-tbb: Added (a multithreaded version of par2cmdline)
+misc/xapian-omega: Updated for version 1.2.8.
+multimedia/bombono-dvd: Updated for version 1.2.1.
+multimedia/devede: Updated for version 3.21.0.
+multimedia/makemkv: Updated for version 1.7.2.
+multimedia/smplayer: Updated for version 0.7.0.
+multimedia/stills2dv: Fixed VERSION (tr - _) and DOWNLOAD
+network/centerim: Fix MD5SUM.
+network/fping6: Fixed VERSION string in .info file
+network/gtk-gnutella: Updated for version 0.98.2.
+network/memcached: Updated for version 1.4.11.
+network/openconnect: Updated for version 3.15.
+network/pflogsumm: Updated for version 1.1.5.
+network/qbittorrent: Updated for version 2.9.5.
+network/qupzilla: Updated for version 1.1.8.
+network/verlihub: Fixed VERSION string in .info file
+network/webalizer: Fixed VERSION string in .info file
+network/weechat: Updated for version 0.3.7.
+office/myrulib: Updated for version 0.28.15.
+office/remind: Updated for version 03.01.12.
+office/texlive: Included more patches from branch2011
+perl/perl-CPANPLUS-Dist-Slackware: Added (Install Perl distributions)
+perl/perl-Image-Info: Updated for version 1.32.
+perl/perl-Mail-SPF: Updated for version 2.8.0.
+perl/perl-Net-CIDR: Updated for version 0.15.
+perl/perl-NetAddr-IP: Updated for version 4.058.
+perl/perl-Template-Toolkit: Updated for version 2.24.
+python/dxfwrite: Added (A Python library to create DXF R12 drawings)
+ruby/facter: Updated for version 1.6.5.
+ruby/rubygems-update: Fixed inversion in .info file
+system/fdupes: Fixed VERSION string in .info file
+system/gparted: Updated for version 0.12.0.
+system/trash-cli: Fixed VERSION strings (s,-,_,g)
+system/wine: Updated for version 1.4.
++--------------------------+
 Mon Feb 20 19:01:58 UTC 2012
 network/remmina-plugins: Removed (included with remmina now)
 system/qemu-kvm: Enabled (optional) spice support.
