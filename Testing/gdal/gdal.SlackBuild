@@ -82,8 +82,8 @@ fi
 # Thanks to the people at Arch for this:
 patch -p0 <$CWD/gdal-python-install.patch
 
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
+CFLAGS="$SLKCFLAGS -Wno-error" \
+CXXFLAGS="$SLKCFLAGS -Wno-error" \
 ./configure \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
