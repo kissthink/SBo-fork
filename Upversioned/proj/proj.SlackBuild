@@ -5,7 +5,7 @@
 # Unofficially upversioned by David Spencer <baildon.research@googlemail.com>
 
 PRGNAM=proj
-VERSION=${VERSION:-4.7.0}
+VERSION=${VERSION:-4.8.0}
 BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
@@ -65,6 +65,7 @@ CXXFLAGS="$SLKCFLAGS" \
 	--docdir=/usr/doc/$PRGNAM-$VERSION \
 	--enable-shared \
 	--disable-static \
+        --without-jni \
 	--build=$ARCH-slackware-linux
 
 make
