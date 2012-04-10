@@ -25,7 +25,7 @@
 # Maintained by David Spencer <baildon.research@googlemail.com>
 
 PRGNAM=libgeotiff
-VERSION=${VERSION:-1.4.0RC1}
+VERSION=${VERSION:-1.4.0RC2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
