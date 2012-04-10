@@ -5,9 +5,10 @@
 # Written by core (eroc@linuxmail.org)
 # Modified by Robby Workman <rworkman@slackbuilds.org>
 # Modified by Heinz Wiesinger <pprkut@liwjatan.org>
+# This version from Ponce's 'ffmpeg' git branch
 
 PRGNAM=ffmpeg
-VERSION=${VERSION:-0.10}
+VERSION=${VERSION:-0.10.2}
 BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
