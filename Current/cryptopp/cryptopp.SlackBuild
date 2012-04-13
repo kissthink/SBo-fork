@@ -9,9 +9,11 @@
 #               in case you also want man pages installed along html doc,
 #               read comments below and adapt accordingly
 
+# Modified for gcc-4.7 by David Spencer <baildon.research@googlemail.com>
+
 PRGNAM=cryptopp
 VERSION=${VERSION:-5.6.1}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-1a}
 TAG=${TAG:-_SBo}
 
 # Automatically determine the architecture we're building on:
@@ -64,7 +66,7 @@ sed -i "s%(PREFIX)/lib%(PREFIX)/lib${LIBDIRSUFFIX}%g" GNUmakefile
 # Fix Makefile to remove copying of non-existent *.so (else make install will fail)
 sed -i "/*.so/d" GNUmakefile
 
-make CFLAGS="$SLKCFLAGS" CXXFLAGS="$SLKCFLAGS"
+make CFLAGS="$SLKCFLAGS" CXXFLAGS="$SLKCFLAGS -fpermissive"
 make install PREFIX=$PKG/usr
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
