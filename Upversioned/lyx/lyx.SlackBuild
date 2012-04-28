@@ -3,9 +3,11 @@
 # Slackware build script for LyX
 # Written by Morten Juhl-Johansen Zölde-Fejér <mjjzf@syntaktisk.dk>
 
+# Unofficially upversioned by David Spencer <baildon.research@googlemail.com>
+
 PRGNAM=lyx
-VERSION=${VERSION:-2.0.0}
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-2.0.3}
+BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
