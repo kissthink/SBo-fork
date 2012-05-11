@@ -1,0 +1,12 @@
+Mosh is a remote terminal application that allows roaming, supports 
+intermittent connectivity, and provides intelligent local echo and line 
+editing of user keystrokes.
+
+Mosh attempts to improve on SSH by being more robust and responsive, 
+especially over Wi-Fi, cellular, and long-distance links.
+
+Mosh requires a little tweaking after first install on Slackware. Both 
+the Mosh server and client applications must be run with a UTF-8 locale, 
+which is not Slackware's default.
+
+Mosh depends on protobuf and perl-IO-Tty.
