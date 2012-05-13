@@ -71,7 +71,7 @@ find . \
  -exec chmod 644 {} \;
 
 WITHLIST=""
-# Grass support causes segfaults on x86_64.  If you really want it,
+# Grass support is buggy.  If you really want it,
 # here is an undocumented option to enable it :-/
 if pkg-config --exists grass; then
   if [ ${GRASS:-no} = "yes" ]; then
@@ -96,6 +96,8 @@ CXXFLAGS="$SLKCFLAGS -Wno-error" \
   --with-geos=yes \
   --with-ogr=yes \
   --with-libz=/usr/lib${LIBDIRSUFFIX} \
+  --with-liblzma \
+  --with-jpeg=internal \
   --with-libtiff=internal \
   --with-curl=/usr/bin/curl-config \
   --without-grib \
