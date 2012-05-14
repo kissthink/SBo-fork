@@ -6,7 +6,7 @@
 # customary to leave one space after the ':' except on otherwise blank lines.
 
           |-----handy-ruler------------------------------------------------------|
-foxtrotgps: foxtrotgps (mapping application)
+foxtrotgps: foxtrotgps (lightweight mapping application)
 foxtrotgps:
 foxtrotgps: FoxtrotGPS is an easy to use, fast, lightweight mapping application
 foxtrotgps: for use with (or without) GPS.
