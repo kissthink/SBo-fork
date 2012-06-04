@@ -1,3 +1,115 @@
+Sun Jun  3 20:22:44 UTC 2012
+academic/gwyddion: Updated for version 2.28.
+academic/smath-studio: Updated for version 0.94.
+desktop/awn-extras: Added (plugins for Avant Window Navigator)
+desktop/qlandkartegt: Updated for version 1.4.1.
+desktop/wminfo: Updated for version 2.6.0.
+desktop/xfce4-fsguard-plugin: Added (fsguard plugin for Xfce panel)
+desktop/xfce4-wavelan-plugin: Added (wavelan plugin for Xfce panel)
+development/arduino: Updated for version 1.0.1.
+development/diffuse: Added (tool for merging and comparing files)
+development/gambas3: Updated for version 3.1.1.
+development/spyder: Updated for version 2.1.10.
+development/vala-12: Added (Compiler for the GObject type system)
+development/zile: Updated for version 2.4.7.
+games/briquolo: Added (breakout with 3D based on OpenGL)
+games/glestae: Updated for version 0.3.93.
+games/knights: Updated for version 2.4.2.
+games/mame: Updated for version 0.146.
+games/megaglest: Updated for version 3.6.0.3.
+games/qmc2: Updated for version 0.36.
+games/starfighter: Updated for version 1.2.
+games/wesnoth: Updated for version 1.10.3.
+games/wordwarvi: Added (retro styled scrolling shoot'em up game)
+graphics/shotwell: Updated to work with our vala-12 build.
+libraries/cfitsio: Updated for version 3.30.
+libraries/freexl: Added (library to extract data from Excel files)
+libraries/geos: Updated for version 3.3.3.
+libraries/libaacs: Updated for version 0.4.0.
+libraries/libspatialite: Added (extension for SQLite database)
+misc/chntpw: Added (Change NT Passwords)
+misc/dos2unix: Updated for version 6.0.
+misc/dvtm: Added (Tiling window management for the console)
+misc/foxtrotgps: Added (lightweight mapping application)
+multimedia/genpuid: Added (generates PUID's)
+multimedia/gnash: Added (SWF movie player)
+multimedia/picard: Updated for version 0.16.
+network/amavisd-new: Updated for version 2.7.1.
+network/b43-firmware: Updated for version 5.10.56.27.3.
+network/b43-fwcutter: Updated for version 014.
+network/chromium: Updated for version 19.0.1084.52.
+network/knemo: Updated for version 0.7.3.
+network/mosh: Updated for version 1.2.1.
+network/mrtg: Updated for version 2.17.4.
+network/p0f: Updated for version 3.05b.
+network/policyd2: Updated for version 2.0.12.
+network/polipo: Updated for version 1.0.4.1.
+network/sshpass: Added (tool for password authentication)
+office/Ted: Updated for version 2.22.
+office/xournal: Updated for version 0.4.6.
+perl/perl-Regexp-Common: Added (common regular expressions)
+perl/perl-cairo: Updated for version 1.082.
+perl/perl-glib: Updated for version 1.260.
+perl/perl-gtk2: Updated for version 1.244.
+perl/perl-pango: Updated for version 1.223.
+system/chrpath: Fixed download link.
+system/spacefm: Added (Multi-panel tabbed file manager)
++--------------------------+
+Sun May 27 10:15:36 UTC 2012
+Fix files with no newline at the end.
++--------------------------+
+Mon May 21 22:59:50 UTC 2012
+Misc slack-desc clean-ups.
+academic/grass: Updated for version 6.4.2.
+academic/qgis: Updated for version 1.7.4.
+audio/ardour: Updated for version 2.8.12.
+audio/celt: Updated for version 0.11.3.
+audio/jack-audio-connection-kit: Updated for version 0.121.3.
+audio/lv2: Added (LADSPA Version 2)
+audio/lv2core: Removed, as it is replaced by lv2.
+audio/pianobar: Updated for version 2012.05.06.
+audio/rosegarden: Updated for version 12.04.
+desktop/Xfce-Theme-Manager: Updated for version 0.1.7.
+desktop/cwp: Updated for version 1.6.2.
+desktop/fusion-icon: Updated for new source location.
+desktop/wminfo: Updated for version 2.5.3.
+development/Sphinx: Updated for version 1.1.3.
+development/spl: Added (SPL Programming Language)
+development/zope.testing: Updated for version 4.1.1.
+games/0ad-data: Updated for version r11863.
+games/0ad: Updated for version r11863.
+graphics/darktable: Updated for version 1.0.3.
+graphics/luminance-hdr: Updated for version 2.2.1.
+libraries/SQLObject: Updated for version 1.3.0.
+libraries/ZConfig: Updated for version 2.9.2.
+libraries/decorator: Updated for version 3.3.3.
+libraries/gdal: Updated for version 1.9.0.
+libraries/libgeotiff: Updated for version 1.4.0.
+libraries/libvirt: Updated for version 0.9.12.
+libraries/simplegeneric: Updated for version 0.8.1.
+libraries/soundtouch: Updated for version 1.6.0.
+libraries/stfl: Updated for version 0.22.
+libraries/zope.component: Updated for version 3.12.1.
+libraries/zope.event: Updated for version 3.5.2.
+libraries/zope.schema: Updated for version 4.1.1.
+misc/kde_cdemu: Added (frontend for CDEmu.)
+multimedia/radiotray: Added (online radio streaming player)
+multimedia/xjadeo: Updated for version 0.6.3.
+network/arm: Updated for version 1.4.5.0.
+network/node: Updated for version 0.6.17.
+network/vde2: Updated for version 2.3.2.
+perl/perl-FCGI: Updated for version 0.74.
+perl/perl-File-HomeDir: Updated for version 0.99.
+perl/perl-HTTP-Proxy: Updated for version 0.25.
+perl/perl-Proc-Daemon: Updated for version 0.14.
+perl/perl-xml-twig: Updated for version 3.39.
+python/Pyro4: Updated for version 4.14.
+python/subvertpy: Updated for version 0.8.10.
+system/conky: Updated for version 1.9.0.
+system/kvm-kmod: Updated for version 3.3.6.
+system/virt-viewer: Added (graphical display for libvirt VMs)
+system/zeroinstall-injector: Updated for version 1.8.
++--------------------------+
 Mon May 14 18:17:03 UTC 2012
 audio/alsa-tools: Added (tools and firmware for various soundcards)
 audio/lash: Added a patch to allow building with texlive.

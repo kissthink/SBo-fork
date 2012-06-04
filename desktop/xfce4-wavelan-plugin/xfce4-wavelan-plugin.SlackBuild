@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# Slackware build script for lv2core
+# Slackware build script for xfce4-diskperf-plugin
 
-# Copyright 2008-2011 Heinz Wiesinger, Amsterdam, The Netherlands
+# Copyright 2012  KaMii <lacielacie@rocketmail.com>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -22,8 +22,8 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-PRGNAM=lv2core
-VERSION=${VERSION:-4.0}
+PRGNAM=xfce4-wavelan-plugin
+VERSION=0.5.6
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -69,45 +69,30 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-./waf configure \
+./autogen.sh
+
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
   --prefix=/usr \
-  --libdir=/usr/lib$LIBDIRSUFFIX
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc/xfce \
+  --enable-shared=yes \
+  --enable-static=no \
+  --enable-debug=no \
+  --build=$ARCH-slackware-linux
 
-./waf build
-./waf install --destdir=$PKG
+make
+make install DESTDIR=$PKG
 
-mkdir -p $PKG/etc/profile.d
-
-cat <<EOF > $PKG/etc/profile.d/$PRGNAM.sh
-#!/bin/sh
-export LV2_PATH=/usr/lib$LIBDIRSUFFIX/lv2
-EOF
-
-cat <<EOF > $PKG/etc/profile.d/$PRGNAM.csh
-#!/bin/csh
-setenv LV2_PATH /usr/lib$LIBDIRSUFFIX/lv2
-EOF
-
-chmod 0755 $PKG/etc/profile.d/*
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a AUTHORS COPYING README \
+cp -a \
+  AUTHORS ChangeLog COPYING INSTALL THANKS NEWS README \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
-
-mkdir -p $PKG/usr/lib$LIBDIRSUFFIX/lv2
-cd $PKG/usr/lib$LIBDIRSUFFIX/lv2
-  for i in data-access-1.0 dyn-manifest-1.0 event-1.0 instance-access-1.0 \
-    midi-1.0 presets-2.0 ui-2.0 units-5.0 uri-map-1.0; do
-        tar xvf $CWD/lv2-$i.tar.gz
-  done
-  chown -R root:root .
-  find . \
-   \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
-   -exec chmod 755 {} \; -o \
-   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
-   -exec chmod 644 {} \;
-cd -
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
