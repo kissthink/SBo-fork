@@ -110,8 +110,8 @@ install -D -m 0644 $CWD/$PRGNAM.png \
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  doc/AUTHORS BUGS CODING doc/CONTRIBUTORS COPYING CHANGELOG \
-  doc/DONORS Exception_to_GPL_for_Qt.txt INSTALL \
+  doc/AUTHORS BUGS CODING doc/CONTRIBUTORS COPYING ChangeLog \
+  doc/DONORS Exception_to_GPL_for_Qt.txt INSTALL NEWS \
   PROVENANCE README doc/SPONSORS TODO doc/TRANSLATORS \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
