@@ -6,8 +6,8 @@
 # Unofficially upversioned by David Spencer <baildon.research@googlemail.com>
 
 PRGNAM=gpsbabel
-VERSION=${VERSION:-1.4.2}
-BUILD=${BUILD:-0}
+VERSION=${VERSION:-1.4.3}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
