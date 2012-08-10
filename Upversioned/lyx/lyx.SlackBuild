@@ -6,7 +6,7 @@
 # Unofficially upversioned by David Spencer <baildon.research@googlemail.com>
 
 PRGNAM=lyx
-VERSION=${VERSION:-2.0.3}
+VERSION=${VERSION:-2.0.4}
 BUILD=${BUILD:-0}
 TAG=${TAG:-_SBo}
 
