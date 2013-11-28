@@ -4,11 +4,12 @@ The zathura-pdf-mupdf plugin adds PDF support to zathura by using the
 mupdf rendering library (replacing the poppler-based PDF support from
 the zathura package).
 
-This requires zathura and mupdf.
-
 Note: This overwrites /usr/lib/zathura/pdf.so from the zathura
 package (replace lib with lib64 for 64-bit systems). zathura doesn't
 support having multiple plugins per filetype, so after installing
 zathura-pdf-mupdf, zathura will always use the mupdf backend. To switch
 back to the poppler backend, remove both zathura and zathura-pdf-mupdf,
 then reinstall zathura.
+
+Note: Make sure your mupdf package has been upgraded to at least version
+1.2 before building this.

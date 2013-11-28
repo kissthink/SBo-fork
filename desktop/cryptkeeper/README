@@ -1,5 +1,1 @@
 Cryptkeeper is a Linux system tray applet that manages EncFS encrypted folders.
-
-Requires:
-1. EncFS
-2. GConf

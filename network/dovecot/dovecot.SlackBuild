@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Copyright 2006, Alan Hicks, Lizella, GA
 # All rights reserved.
@@ -21,7 +21,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=dovecot
-VERSION=2.0.12
+VERSION=${VERSION:-2.2.6}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -39,9 +39,11 @@ PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 
 bailout() {
-  echo "  You must have a dovecot user and group to build and/or use dovecot:"
+  echo "  You must have both dovecot and dovenull users and groups:"
   echo "    # groupadd -g 202 dovecot"
   echo "    # useradd -d /dev/null -s /bin/false -u 202 -g 202 dovecot"
+  echo "    # groupadd -g 248 dovenull"
+  echo "    # useradd -d /dev/null -s /bin/false -u 248 -g 248 dovenull"
   exit 1
 }
 
@@ -74,8 +76,12 @@ cd $TMP
 rm -rf $PRGNAM-$VERSION
 tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
 cd $PRGNAM-$VERSION
-chmod -R a-s,u+w,go+r-w .
 chown -R root:root .
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+ -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
 # Add -ldl to LDFLAGS for sqlite
 CFLAGS="$SLKCFLAGS" \

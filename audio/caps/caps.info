@@ -1,10 +1,12 @@
 PRGNAM="caps"
-VERSION="0.4.4"
+VERSION="0.9.7"
 HOMEPAGE="http://quitte.de/dsp/caps.html"
-DOWNLOAD="http://quitte.de/dsp/caps_0.4.4.tar.gz"
-MD5SUM="1f4a8d50257b6cbdaefecc78e3010d27"
+DOWNLOAD="http://quitte.de/dsp/caps_0.9.7.tar.bz2 \
+          http://quitte.de/dsp/caps-doc_0.9.7.tar.bz2"
+MD5SUM="d74582d3ae7a4244d3a77501693bbdf3 \
+        03811f37b483aa793f098690b165df27"
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
+REQUIRES="ladspa_sdk"
 MAINTAINER="B. Watson"
 EMAIL="yalhcru@gmail.com"
-APPROVED="rworkman"

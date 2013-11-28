@@ -1,8 +1,0 @@
-[Desktop Entry]
-Categories=Education;
-Comment=Bioinformatics suite
-Exec=runJemboss.csh
-Icon=emboss.png
-Name=EMBOSS
-StartupNotify=false
-Type=Application

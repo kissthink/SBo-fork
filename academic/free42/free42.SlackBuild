@@ -23,7 +23,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=free42
-VERSION=1.4.74
+VERSION=${VERSION:-1.4.77}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -63,8 +63,15 @@ rm -rf $PRGNAM
 tar xvf $CWD/$PRGNAM.tgz
 cd $PRGNAM
 chown -R root:root .
-chmod -R u+w,go+r-w,a-s .
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+ -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 cd gtk
+
+# Add X11 library to Makefile
+echo 'LIBS := ${LIBS} -lX11' >> Makefile
 
 make
 make -e BCD_MATH=1

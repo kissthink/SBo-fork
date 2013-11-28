@@ -5,10 +5,8 @@ of applications.  The functionality of the system is provided via an
 assortment of ready to use tools, XML authoring components, and an
 extensible plug-in based API.
 
-This requires libdv and ffmpeg.
-libquicktime is optional but recommended, since it will be needed
-by kdenlive anyway.
-Additional optional dependencies are ladspa_sdk and frei0r.
+Optional dependencies are ladspa_sdk, frei0r, swfdec, libvdpau and
+jack-rack.
 
-Optional:
-By default PYTHON=yes for openshot.
+The build script autodetect language interpreters on your system
+and build the relative bindings.

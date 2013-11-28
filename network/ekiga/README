@@ -4,24 +4,11 @@ and SIP protocols. It supports many audio and video codecs, and is
 interoperable with other SIP compliant software and also with
 Microsoft NetMeeting.
 
-This package will be built without gnome support. This breaks the
-Help button, which probably needs the Gnome help system.
+Help button is broken, which probably needs the Gnome help system.
 
 The following options, all disabled by default, are supported. Just
 set any of them to "yes" to enable the corresponding feature:
-- AVAHI (requires avahi)
+- AVAHI (requires the optional dependency avahi)
 - KDE (experimental KDE support)
 - KAB (experimental KAddressBook support)
 - GS (experimental GStreamer support)
-
-Ekiga requires GConf, libsigc++, ptlib, and opal.
-
-Note that this version has gconf enabled by default. To copy your
-old contacts over to the gconf xml file from .config/ekiga.conf is
-fairly trivial.
-
-The gconf file is located at:
-~/.gconf/apps/ekiga/contacts/%gconf.xml and you need to copy all
-between the &lt;list&gt; and &lt;/list&gt;
-
-You _must_ kill /usr/libexec/gconfd-2 process _before_ doing this.

@@ -5,11 +5,11 @@
 # Written by pyllyukko
 
 PRGNAM=modsecurity-apache
-VERSION=${VERSION:-2.6.5}
+VERSION=${VERSION:-2.6.8}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
-CRS_VERSION="2.2.4"
+CRS_VERSION="2.2.6"
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -55,17 +55,6 @@ then
   then
     /usr/bin/gpgv "${CWD}/${PRGNAM}_${VERSION}.tar.gz.asc"
   fi
-
-  # Verify the Core Rule Set package.
-  set +e
-  /usr/bin/gpg --keyring trustedkeys.gpg --no-default-keyring --list-keys 0x9624FCD2 &>/dev/null
-  GPG_RET=${?}
-  set -e
-  if [ ${GPG_RET} -eq 0 -a \
-       -f "${CWD}/modsecurity-crs_${CRS_VERSION}.tar.gz.asc" ]
-  then
-    /usr/bin/gpgv "${CWD}/modsecurity-crs_${CRS_VERSION}.tar.gz.asc"
-  fi
 fi
 
 set -e
@@ -78,8 +67,8 @@ tar xvf $CWD/${PRGNAM}_${VERSION}.tar.gz
 cd ${PRGNAM}_${VERSION}
 tar xvf $CWD/modsecurity-crs_${CRS_VERSION}.tar.gz
 chown -R root:root .
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
@@ -120,8 +109,8 @@ cat modsecurity.conf-recommended > $PKG/etc/httpd/extra/modsecurity-recommended.
 # The Core Rule Set
 mkdir -p ${PKG}/etc/httpd/crs
 cp -Rv modsecurity-crs_${CRS_VERSION}/* ${PKG}/etc/httpd/crs
-cat modsecurity-crs_${CRS_VERSION}/modsecurity_crs_10_config.conf.example > \
-  ${PKG}/etc/httpd/crs/modsecurity_crs_10_config.conf.new
+cat modsecurity-crs_${CRS_VERSION}/modsecurity_crs_10_setup.conf.example > \
+  ${PKG}/etc/httpd/crs/modsecurity_crs_10_setup.conf.new
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc

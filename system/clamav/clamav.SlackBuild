@@ -23,11 +23,11 @@
 
 # Modified to SBo format with the help of Yalla-One
 # Version bump and various other changes by Robby Workman
-# New version bump and various other changes by ponce
+# New version bump and various other changes by Matteo Bernardini
 # No additional license terms added
 
 PRGNAM=clamav
-VERSION=${VERSION:-0.97.5}
+VERSION=${VERSION:-0.98}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -86,14 +86,16 @@ rm -rf $PRGNAM-$VERSION
 tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
 cd $PRGNAM-$VERSION || exit 1
 chown -R root:root .
-chmod -R u+w,go+r-w,a-s .
-
-# Make gcc-4.7.x happy, should be safe for older ones
-patch -p1 < $CWD/gcc47.patch
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+ -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
 # Specify the desired mirror in the update config file
 # http://www.iana.org/cctld/cctld-whois.htm
-sed -i "s/^\#DatabaseMirror.*/DatabaseMirror db.${COUNTRY}.clamav.net/" etc/freshclam.conf
+sed -i "s/^\#DatabaseMirror.*/DatabaseMirror db.${COUNTRY}.clamav.net/" \
+  etc/freshclam.conf.sample
 
 sed \
   -e "s/^Example/#Example/" \
@@ -104,7 +106,7 @@ sed \
   -e "s/^\#AllowSupplementaryGroups.*/AllowSupplementaryGroups yes/" \
   -e "s/^\#DatabaseOwner.*/DatabaseOwner clamav/" \
   -e "s/^\#NotifyClamd.*/NotifyClamd \/etc\/clamd.conf/" \
-  -i etc/freshclam.conf
+  -i etc/freshclam.conf.sample
 sed \
   -e "s/^Example/#Example/" \
   -e "s/^\#LogSyslog/LogSyslog/" \
@@ -118,7 +120,7 @@ sed \
   -e "s/^\#User.*/User clamav/" \
   -e "s/^\#AllowSupplementaryGroups.*/AllowSupplementaryGroups yes/" \
   -e "s/^\#ExitOnOOM/ExitOnOOM/" \
-  -i etc/clamd.conf
+  -i etc/clamd.conf.sample
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
@@ -143,16 +145,18 @@ make install DESTDIR=$PKG
 
 # Prepare the config files:
 for cf in clamd freshclam clamav-milter; do
-  mv $PKG/etc/$cf.conf $PKG/etc/$cf.conf.new
+  mv $PKG/etc/$cf.conf.sample $PKG/etc/$cf.conf.new
 done
 
 # Our rc script and logrotate entry:
 install -D -m 0755 $CWD/rc.clamav $PKG/etc/rc.d/rc.clamav.new
-install -D -m 0644 $CWD/logrotate.clamav $PKG/etc/logrotate.d/clamav
+install -D -m 0644 $CWD/logrotate.clamav $PKG/etc/logrotate.d/clamav.new
 
-# Create pid, socket, db and log directories
-mkdir -p $PKG/var/{lib,log,run}/clamav
-chmod 771 $PKG/var/{lib,log,run}/clamav
+# Create pid, socket, db, and log directories
+# init script must still ensure that /var/run/clamav exists
+# and has proper ownership and permissions though
+mkdir -p $PKG/var/lib/clamav $PKG/var/log/clamav $PKG/var/run/clamav
+chmod 771 $PKG/var/lib/clamav $PKG/var/log/clamav $PKG/var/run/clamav
 
 # Fixup some ownership and permissions issues
 chown -R root:root $PKG
@@ -160,14 +164,17 @@ chmod -R o-w $PKG
 chown clamav $PKG/usr/sbin/clamav-milter
 chmod 4700 $PKG/usr/sbin/clamav-milter
 chmod 0770 $PKG/var/lib/clamav
-touch $PKG/var/lib/clamav/{main,daily}.cvd
+touch $PKG/var/lib/clamav/main.cvd $PKG/var/lib/clamav/daily.cvd
 chmod 0660 $PKG/var/lib/clamav/*
 
 # Create log files in such a way that they won't clobber existing ones
-touch $PKG/var/log/clamav/{clamd,freshclam}.log.new
-chmod 660 $PKG/var/log/clamav/{clamd,freshclam}.log.new
+touch $PKG/var/log/clamav/clamd.log.new \
+  $PKG/var/log/clamav/freshclam.log.new
+chmod 660 $PKG/var/log/clamav/clamd.log.new \
+  $PKG/var/log/clamav/freshclam.log.new
 
-chown -R clamav:clamav $PKG/var/{lib,log,run}/clamav
+chown -R clamav:clamav $PKG/var/lib/clamav $PKG/var/log/clamav \
+  $PKG/var/run/clamav
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
@@ -179,7 +186,8 @@ mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
   AUTHORS BUGS COPYING ChangeLog FAQ INSTALL NEWS README UPGRADE \
   docs/*.pdf docs/html examples $PKG/usr/doc/$PRGNAM-$VERSION
-chmod 0644 $PKG/usr/doc/$PRGNAM-$VERSION/*
+chmod -R 0644 $PKG/usr/doc/$PRGNAM-$VERSION
+find $PKG/usr/doc/$PRGNAM-$VERSION -type d -exec chmod 0755 {} \;
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 cat $CWD/README.SLACKWARE > $PKG/usr/doc/$PRGNAM-$VERSION/README.SLACKWARE
 

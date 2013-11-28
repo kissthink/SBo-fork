@@ -2,6 +2,7 @@
 
 # Slackware build script for libfm
 
+# Copyright 2013 Matteo Bernardini <ponce@slackbuilds.org>
 # Copyright 2010 Chris Abela <chris.abela@maltats.com>
 # All rights reserved.
 #
@@ -21,11 +22,9 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# slightly modified by ponce <matteo.bernardini@gmail.com>
 
 PRGNAM=libfm
-VERSION=${VERSION:-0.1.17}
+VERSION=${VERSION:-20131123_fb4bdbe}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -56,6 +55,9 @@ else
   LIBDIRSUFFIX=""
 fi
 
+# Enable custom actions if we have vala available
+if [ -h /usr/bin/vapigen ]; then actions=""; else actions="--disable-actions"; fi
+
 set -e
 
 rm -rf $PKG
@@ -65,8 +67,8 @@ rm -rf $PRGNAM-$VERSION
 tar xvf $CWD/$PRGNAM-$VERSION.tar.?z
 cd $PRGNAM-$VERSION
 chown -R root:root .
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
@@ -80,21 +82,27 @@ CXXFLAGS="$SLKCFLAGS" \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
   --localstatedir=/var \
-  --enable-udisks=yes \
+  --mandir=/usr/man \
   --enable-static=no \
+  --enable-gtk-doc \
+  $actions \
   --build=$ARCH-slackware-linux
 
 make
 make install-strip DESTDIR=$PKG
 
+# Fix include folders
+( cd $PKG/usr/include ; rm -fr libfm ; ln -s libfm-1.0 libfm )
+
+find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+
 # add handlers for terminal and archiver from LXDE components to the default config
-sed -i -e 's|\[ui\]|terminal=lxterminal -e %s\narchiver=xarchiver %s\n\n[ui]|' \
+sed -i -e 's|\[ui\]|terminal=lxterminal -e %s\narchiver=file-roller %s\n\n[ui]|' \
   $PKG/etc/xdg/libfm/libfm.conf
-# add them also for web browser and mail client using those of Slackware
-sed -i -e 's|^WebBrowser=.*|WebBrowser=mozilla-firefox.desktop|' \
-  $PKG/etc/xdg/libfm/pref-apps.conf
-sed -i -e 's|^MailClient=.*|MailClient=mozilla-thunderbird.desktop|' \
-  $PKG/etc/xdg/libfm/pref-apps.conf
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a AUTHORS COPYING README TODO \

@@ -22,20 +22,18 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# Modified by Niklas "Nille" Åkerström to use cmake since thats what the
+# Modified by Niklas "Nille" Ã…kerstrÃ¶m to use cmake since thats what the
 # project will use in the future.   No additional license terms added
 
 PRGNAM=avidemux
-VERSION=${VERSION:-2.5.2}
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-2.5.6}
+BUILD=${BUILD:-3}
 TAG=${TAG:-_SBo}
 
-# Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
     i?86) ARCH=i486 ;;
     arm*) ARCH=arm ;;
-    # Unless $ARCH is already set, use uname -m for all other archs:
        *) ARCH=$( uname -m ) ;;
   esac
 fi
@@ -69,15 +67,19 @@ tar xvf $CWD/${PRGNAM}_${VERSION}.tar.gz
 mv ${PRGNAM}_${VERSION} $PRGNAM-$VERSION
 cd $PRGNAM-$VERSION
 chown -R root:root .
-chmod -R a-s,u+w,go+r-w .
-
-#Patch that installs i18n in the correct place even if we compile with qt4 support
-cat $CWD/avidemux-2.5.1-i18n.patch | patch -p1 --verbose --backup --suffix=.orig
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+ -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
 if [ "$ARCH" = "x86_64" ]; then
   # Some paths are incorrectly hardcoded to "lib":
   sed -i -e "s/Dir=\"lib\"/Dir=\"lib${LIBDIRSUFFIX}\"/" $(grep -lr 'Dir="lib"' .)
 fi
+
+# Cut away jobs number from the MAKEFLAGS
+MAKEFLAGS=$(echo "$MAKEFLAGS" | sed "s/-j[0-999]//g")
 
 mkdir build
 cd build
@@ -122,7 +124,7 @@ cd build
 #	gtk || -DNO_GTK:BOOL=
 #	qt4 || -DNO_QT4:BOOL=
 
-  make
+  make -j1
   make DESTDIR=$PKG install/strip
 cd ..
 
@@ -139,7 +141,7 @@ cd build_plugins
     -DAVIDEMUX_CORECONFIG_DIR=$(cd .. ; pwd)/build/config \
     -DAVIDEMUX_INSTALL_PREFIX=$(cd .. ; pwd)/build \
     ../plugins
-  make
+  make -j1
   make DESTDIR=$PKG install/strip
 cd -
 
@@ -148,13 +150,23 @@ cat man/avidemux.1 | gzip -9c > $PKG/usr/man/man1/avidemux.1.gz
 
 cd $TMP/$PRGNAM-$VERSION
 mkdir -p $PKG/usr/share/{applications,pixmaps}
-cat avidemux2-gtk.desktop > $PKG/usr/share/applications/avidemux2-gtk.desktop
-cat avidemux2-gtk.desktop > $PKG/usr/share/applications/avidemux2-qt.desktop
-cat avidemux_icon.png > $PKG/usr/share/pixmaps/avidemux.png
-#patch avidemux2_qt.desktop to exec avidemux2_qt4 instead of avidemux2_gtk
-sed -i 's/avidemux2_gtk/avidemux2_qt4/' $PKG/usr/share/applications/avidemux2-qt.desktop
-sed -i 's/GTK+/Qt/g' $PKG/usr/share/applications/avidemux2-qt.desktop
-sed -i 's/GTK/Qt/' $PKG/usr/share/applications/avidemux2-qt.desktop
+mkdir -p $PKG/usr/share/icons/hicolor/{16x16,32x32,48x48,64x64}/apps
+# If the qt4 binary was built, we prefer to use that over the gtk version:
+if [ -x $PKG/usr/bin/avidemux2_qt4 ]; then
+  cat avidemux2.desktop | sed -e 's/_gtk/_qt4/' \
+    > $PKG/usr/share/applications/avidemux2.desktop
+else
+  install -m644 avidemux2.desktop $PKG/usr/share/applications/avidemux2.desktop
+fi
+install -m644 avidemux_icon.png $PKG/usr/share/pixmaps/avidemux.png
+install -m644 avidemux_icon.png \
+  ${PKG}/usr/share/icons/hicolor/64x64/apps/avidemux.png
+convert avidemux_icon.png -resize 16x16 \
+  ${PKG}/usr/share/icons/hicolor/16x16/apps/avidemux.png
+convert avidemux_icon.png -resize 32x32 \
+  ${PKG}/usr/share/icons/hicolor/32x32/apps/avidemux.png
+convert avidemux_icon.png -resize 48x48 \
+  ${PKG}/usr/share/icons/hicolor/48x48/apps/avidemux.png
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a AUTHORS COPYING README TODO \
@@ -168,6 +180,3 @@ cat $CWD/doinst.sh > $PKG/install/doinst.sh
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
 
-if [ "$1" = "--cleanup" ]; then
-	 rm -rf $PKG $TMP/$PRGNAM-$VERSION
- fi

@@ -4,11 +4,11 @@
 # Written by powtrix (@gmail.com)
 
 PRGNAM=tbb
-VERSION=${VERSION-4.0u5}
+VERSION=${VERSION-4.1u4}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
-SRCVERSION=${SRCVERSION:-40_20120613oss}
+SRCVERSION=${SRCVERSION:-41_20130613oss}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -39,14 +39,14 @@ fi
 
 set -e
 
-rm -rf $PKG $PRGNAM${SRCVERSION}
+rm -rf $PKG $TMP/$PRGNAM${SRCVERSION}
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$PRGNAM${SRCVERSION}_src.tgz
 cd $PRGNAM${SRCVERSION}
 chown -R root:root .
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
@@ -54,9 +54,12 @@ find . \
 make
 
 mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}
-mv build/linux_*_release/\
-{libtbb.so{,.2},libtbbmalloc.so{,.2},libtbbmalloc_proxy.so{,.2}} \
-  $PKG/usr/lib${LIBDIRSUFFIX}
+# The *.so (no numerical suffix) files should be symlinks, but they're not,
+# so we'll do that correct ourselves
+mv build/linux_*_release/*.so.* $PKG/usr/lib${LIBDIRSUFFIX}
+ln -s libtbb.so.2 $PKG/usr/lib${LIBDIRSUFFIX}/libtbb.so
+ln -s libtbbmalloc.so.2 $PKG/usr/lib${LIBDIRSUFFIX}/libtbbmalloc.so
+ln -s libtbbmalloc_proxy.so.2 $PKG/usr/lib${LIBDIRSUFFIX}/libtbbmalloc_proxy.so
 
 mv include $PKG/usr
 
@@ -64,8 +67,7 @@ find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" \
  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2>/dev/null || true
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a CHANGES COPYING README doc \
- $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a CHANGES COPYING README doc $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install

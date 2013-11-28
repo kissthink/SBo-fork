@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Copyright 2009, Jonathan Larsen (agentc0re), SLC, UT
 # Contact Info: agentc0re 'AT' learnix 'DOT' net
@@ -36,9 +36,11 @@
 # Oct 11th, 2010
 #	Version upgrade to 1.2.2
 #
+# Oct 2nd, 2012
+#	Version upgrade to 1.4.3 - Matteo Bernardini <ponce@slackbuilds.org>
 
 PRGNAM=openshot
-VERSION=1.2.2
+VERSION=1.4.3
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -79,8 +81,8 @@ rm -rf $PRGNAM
 tar xvf $CWD/$PRGNAM-$VERSION.tar.gz  || exit 1
 cd $PRGNAM-$VERSION
 chown -R root:root .
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;

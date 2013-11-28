@@ -2,8 +2,7 @@
 
 # Slackware build script for Opal
 
-# Copyright 2008-2009 Mauro Giachero 
-# All rights reserved.
+# Copyright 2008-2009 Mauro Giachero
 # Copyright 2011 David Woodfall
 # All rights reserved.
 #
@@ -25,8 +24,8 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=opal
-VERSION=${VERSION:-3.10.3}
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-3.10.10}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -42,8 +41,7 @@ TMP=${TMP:-/tmp/SBo}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 
-# The -D__STDC_CONSTANT_MACROS thing is required to build
-# against ffmpeg 0.6
+# The -D__STDC_CONSTANT_MACROS thing is required to build against ffmpeg 0.6
 # Retrieved from
 #  http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/net-libs/opal/opal-3.6.7.ebuild?r1=1.3&r2=1.4
 # Thanks to the Gentoo folks for coming up with this fix!
@@ -67,7 +65,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.bz2
+tar xvf $CWD/$PRGNAM-$VERSION.tar.xz
 cd $PRGNAM-$VERSION
 
 (
@@ -77,11 +75,13 @@ cd $PRGNAM-$VERSION
 )
 
 chown -R root:root .
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
- -exec chmod 755 {} \; -o \
- \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
- -exec chmod 644 {} \;
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+ -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
+
+patch -p1 < $CWD/opal-ffmpeg.patch
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
@@ -103,7 +103,7 @@ find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a Change* mpl-1.0.htm docs/* $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a mpl-1.0.htm docs/* $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install

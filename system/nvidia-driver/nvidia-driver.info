@@ -1,22 +1,30 @@
 PRGNAM="nvidia-driver"
-VERSION="295.33"
+VERSION="319.60"
 HOMEPAGE="http://www.nvidia.com"
-DOWNLOAD="ftp://download.nvidia.com/XFree86/Linux-x86/295.33/NVIDIA-Linux-x86-295.33.run \
-          ftp://download.nvidia.com/XFree86/nvidia-installer/nvidia-installer-295.33.tar.bz2 \
-          ftp://download.nvidia.com/XFree86/nvidia-settings/nvidia-settings-295.33.tar.bz2 \
-          ftp://download.nvidia.com/XFree86/nvidia-xconfig/nvidia-xconfig-295.33.tar.bz2"
-MD5SUM="1634fb3115526caeae5eb8227282bf17 \
-        c93582703033ea0946bc61de05e53fb0 \
-        5416e9ff2d198147ec786b0f0889d14c \
-        c19449c1de82a0d78e774e96e31587bd"
-DOWNLOAD_x86_64="ftp://download.nvidia.com/XFree86/Linux-x86_64/295.33/NVIDIA-Linux-x86_64-295.33.run \
-                 ftp://download.nvidia.com/XFree86/nvidia-installer/nvidia-installer-295.33.tar.bz2 \
-                 ftp://download.nvidia.com/XFree86/nvidia-settings/nvidia-settings-295.33.tar.bz2 \
-                 ftp://download.nvidia.com/XFree86/nvidia-xconfig/nvidia-xconfig-295.33.tar.bz2"
-MD5SUM_x86_64="9e172ac5bd8f722d5f4931b5c687942e \
-               c93582703033ea0946bc61de05e53fb0 \
-               5416e9ff2d198147ec786b0f0889d14c \
-               c19449c1de82a0d78e774e96e31587bd"
+DOWNLOAD="ftp://download.nvidia.com/XFree86/Linux-x86/319.60/NVIDIA-Linux-x86-319.60.run \
+          ftp://download.nvidia.com/XFree86/nvidia-installer/nvidia-installer-319.60.tar.bz2 \
+	  ftp://download.nvidia.com/XFree86/nvidia-modprobe/nvidia-modprobe-319.60.tar.bz2 \
+	  ftp://download.nvidia.com/XFree86/nvidia-persistenced/nvidia-persistenced-319.60.tar.bz2 \
+	  ftp://download.nvidia.com/XFree86/nvidia-settings/nvidia-settings-319.60.tar.bz2 \
+          ftp://download.nvidia.com/XFree86/nvidia-xconfig/nvidia-xconfig-319.60.tar.bz2"
+MD5SUM="893958183acc35feb0740747c7da306b \
+        1c50d854267ebecd6633c8f15a5e13bb \
+        bfa6c140a8c034bcd7bbc512c27412b4 \
+        b0c652cb6c56a149ee72956874b4e578 \
+        e84788f85a000bfe7ecfec739e7b6457 \
+        60298a026d970d8e0920f8c55e5589a6"
+DOWNLOAD_x86_64="ftp://download.nvidia.com/XFree86/Linux-x86_64/319.60/NVIDIA-Linux-x86_64-319.60.run \
+          ftp://download.nvidia.com/XFree86/nvidia-installer/nvidia-installer-319.60.tar.bz2 \
+	  ftp://download.nvidia.com/XFree86/nvidia-modprobe/nvidia-modprobe-319.60.tar.bz2 \
+	  ftp://download.nvidia.com/XFree86/nvidia-persistenced/nvidia-persistenced-319.60.tar.bz2 \
+	  ftp://download.nvidia.com/XFree86/nvidia-settings/nvidia-settings-319.60.tar.bz2 \
+          ftp://download.nvidia.com/XFree86/nvidia-xconfig/nvidia-xconfig-319.60.tar.bz2"
+MD5SUM_x86_64="e31404d2e5aa0fa90b5b138ed9c666a3 \
+        1c50d854267ebecd6633c8f15a5e13bb \
+        bfa6c140a8c034bcd7bbc512c27412b4 \
+        b0c652cb6c56a149ee72956874b4e578 \
+        e84788f85a000bfe7ecfec739e7b6457 \
+        60298a026d970d8e0920f8c55e5589a6"
+REQUIRES="libvdpau nvidia-kernel"
 MAINTAINER="Edward Koenig"
 EMAIL="kingbeowulf@gmail.com"
-APPROVED="rworkman"

@@ -1,7 +1,8 @@
 #!/bin/sh
 
 # SlackBuild script for "PokerTH".
-# Copyright 2009-2011 Marcel Saegebarth <marc@mos6581.de>
+# Copyright 2009-2013 Marcel Saegebarth <marc@mos6581.de>
+# Copyright 2012 Laurent Nardou <l.nardou@wanadoo.fr>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -23,11 +24,9 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# Modified by SlackBuilds.org
-
 PRGNAM=pokerth
 SRCNAM=PokerTH
-VERSION=0.8.2
+VERSION=1.0.1
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -61,8 +60,8 @@ cd $TMP
 tar xvf $CWD/$SRCNAM-$VERSION-src.tar.bz2
 cd $SRCNAM-$VERSION-src
 chown -R root:root .
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
   -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
   -exec chmod 644 {} \;
@@ -74,7 +73,6 @@ make #CFLAGS="$SLKCFLAGS" CXXFLAGS="$SLKCFLAGS"
 make install DESTDIR=$PKG INSTALL_ROOT=$PKG
 
 mkdir -p $PKG/usr/bin
-install -s -D -m 0755 $TMP/$SRCNAM-$VERSION-src/pokerth $PKG/usr/bin
 install -s -D -m 0755 $TMP/$SRCNAM-$VERSION-src/bin/pokerth_server $PKG/usr/bin
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION

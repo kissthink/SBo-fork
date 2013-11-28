@@ -1,11 +1,11 @@
 #!/bin/sh
 
 # Slackware build script for qastools
-# Written by ponce <matteo.bernardini@gmail.com>
+# Written by Matteo Bernardini <ponce@slackbuilds.org>
 
 PRGNAM=qastools
-VERSION=${VERSION:-0.16.1}
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-0.17.2}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -37,7 +37,7 @@ fi
 
 DOCS="CHANGELOG COPYING README TODO"
 
-set -e # Exit on most errors
+set -e 
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
@@ -46,8 +46,8 @@ rm -rf ${PRGNAM}_${VERSION}
 tar xvf $CWD/${PRGNAM}_${VERSION}.tar.?z*
 cd ${PRGNAM}_${VERSION}
 chown -R root:root .
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
@@ -59,12 +59,14 @@ cd build
     -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release ..
-  make 
+  make
   make install DESTDIR=$PKG
 cd ..
 
 # move the man pages in the proper place
 mv $PKG/usr/share/man $PKG/usr/man
+# This slipped, ops
+rm $PKG/usr/share/qastools/COPYING
 
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true

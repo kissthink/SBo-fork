@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 
 # Slackware build script for midori.
 
 # Copyright 2008 Andrew Brouwers <abrouwers@gmail.com>
 # Copyright 2009-2011 Pierre Cazenave <pwcazenave {at} gmail [dot] com>
-# Copyright 2012 Roberto Neri, Palermo, Italy
+# Copyright 2012-2013 Roberto Neri, Palermo, Italy
 #
 # All rights reserved.
 #
@@ -26,7 +26,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=midori
-VERSION=${VERSION:-0.4.5}
+VERSION=${VERSION:-0.5.5}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -42,8 +42,6 @@ CWD=$(pwd)
 TMP=${TMP:-/tmp/SBo}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
-
-DOCS="AUTHORS COPYING ChangeLog EXPAT HACKING INSTALL README TODO TRANSLATE"
 
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
@@ -62,18 +60,26 @@ else
   LIBDIRSUFFIX=""
 fi
 
+# GTK3 support is disabled by default but can be enabled
+# by passing GTK3=yes to the script
+if [ "${GTK3:-no}" = "yes" ]; then
+  ENABLE_GTK3="enable"
+else
+  ENABLE_GTK3="disable"
+fi
+
 set -eu
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.bz2
+tar xvf $CWD/${PRGNAM}_${VERSION}_all_.tar.?z*
 cd $PRGNAM-$VERSION
 
 chown -R root:root .
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
@@ -89,8 +95,8 @@ export CXXFLAGS="$SLKCFLAGS"
    --localstatedir=/var \
    --datarootdir=/usr/share/ \
    --mandir=/usr/man \
-   --enable-unique \
-   --enable-addons
+   --$ENABLE_GTK3-gtk3 \
+   --disable-zeitgeist
 
 ./waf build
 ./waf install --destdir=$PKG
@@ -99,11 +105,12 @@ export CXXFLAGS="$SLKCFLAGS"
 mv $PKG/etc/xdg/midori/search $PKG/etc/xdg/midori/search.new
 mv $PKG/etc/xdg/midori/extensions/adblock/config $PKG/etc/xdg/midori/extensions/adblock/config.new
 
-cp -a $DOCS $PKG/usr/doc/$PRGNAM-$VERSION
+# The other doc files have already been copied into /usr/doc/$PRGNAM-$VERSION
+# by "./waf install"
+cp -a HACKING TODO TRANSLATE \
+  $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
-cd $PKG/usr/doc
-  ln -s $PRGNAM-$VERSION $PRGNAM
-cd -
+ln -s $PRGNAM-$VERSION $PKG/usr/doc/$PRGNAM
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc

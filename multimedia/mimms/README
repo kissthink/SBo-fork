@@ -1,3 +1,1 @@
-mimms is an mms stream downloader that uses libmms.
-
-This requires libmms.
+mimms is an mms (e.g. mms://) stream downloader.

@@ -8,6 +8,4 @@ bitmap tracing, text-on-path, flowed text, direct XML editing, and more.
 It imports formats such as JPEG, PNG, TIFF, and others and exports PNG 
 as well as multiple vector-based formats.
 
-Inkscape requires gc, gsl, and gtkmm.  lxml and numpy are optional 
-dependencies, but they are strongly recommended if you want all of 
-inkscape's intended functionality.
+libwpg is an optional dependency.

@@ -4,8 +4,8 @@
 # written by powtrix (@gmail.com)
 
 PRGNAM=speed-dreams
-VERSION=2.0.0_rc1_r4420
-BUILD=${BUILD:-1}
+VERSION=2.0.0_r4687
+BUILD=${BUILD:-2}
 TAG=${TAG:-_SBo}
 
 SRCVERSION=$(echo $VERSION | tr _ -)
@@ -49,11 +49,17 @@ tar xvf $CWD/$PRGNAM-src-base-$SRCVERSION.tar.xz
 tar xvf $CWD/$PRGNAM-src-hq-cars-and-tracks-$SRCVERSION.tar.xz
 tar xvf $CWD/$PRGNAM-src-more-hq-cars-and-tracks-$SRCVERSION.tar.xz
 tar xvf $CWD/$PRGNAM-src-wip-cars-and-tracks-$SRCVERSION.tar.xz
+tar xvf $CWD/$PRGNAM-src-unmaintained-$SRCVERSION.tar.xz
 
 chown -R root:root .
-chmod -R u+w,go+r-w,a-s .
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+ -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
-patch -p0 < $CWD/gcc47.patch
+mkdir build
+cd build
 
 cmake \
   -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
@@ -62,9 +68,17 @@ cmake \
   -DCMAKE_INSTALL_PREFIX:STRING=/usr \
   -DCMAKE_PREFIX_PATH:STRING=/usr \
   -DOPTION_OFFICIAL_ONLY:BOOL=ON \
-  -DOPTION_DEBUG:BOOL=OFF .
+  -DOPTION_DEBUG:BOOL=OFF ..
 make
 make install DESTDIR=$PKG
+cd -
+
+find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | \
+  grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2>/dev/null || true
+
+mv $PKG/usr/{share/,}man
+
+find $PKG/usr/man -type f -exec gzip -9 {} \;
 
 mkdir -p $PKG/usr/share/pixmaps
 cp -a $CWD/$PRGNAM.xpm $PKG/usr/share/pixmaps
@@ -80,7 +94,7 @@ cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/doinst.sh > $PKG/install/doinst.sh
+cat $CWD/doinst.sh  > $PKG/install/doinst.sh
 
 cd $PKG
 /sbin/makepkg -l y -c n  $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}

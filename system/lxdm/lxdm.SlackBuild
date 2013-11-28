@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=lxdm
-VERSION=${VERSION:-0.3.0}
+VERSION=${VERSION:-20120728_102ea5e}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -60,19 +60,23 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
+tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*
 cd $PRGNAM-$VERSION
 chown -R root:root .
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+# patch lxdm.conf.in to avoid a wrong libexec path - must go deep on
+# why the build system gets it wrong
+sed -i "s/@FULL_LIBEXECDIR@/\/usr\/libexec/" data/lxdm.conf.in
+
 # Patch the Xsession file to source /etc/profile and xprofile on session start
 patch -p1 < $CWD/patches/source_profile_in_Xsession.diff
 
-# Remove the SuSe section from Xsession file, since it causes Slackware 
+# Remove the SuSe section from Xsession file, since it causes Slackware
 # to always launch whatever WM/DE that /etc/X11/xinit/xinitrc symlink is
 # pointing to, regardless of what the user wants...
 patch -p1 < $CWD/patches/remove_suse_from_Xsession.diff
@@ -89,7 +93,9 @@ patch -p1 < $CWD/patches/lxdm-0.3.0-without_pam.diff
 # both KDM and GDM set DESKTOP_SESSION regardless of whether PAM is used,
 # this seems the path of least resistance.  This patch *should* be easy
 # to maintain ; let's hope I don't eat those words.  --rworkman
-patch -p1 < $CWD/patches/lxdm-0.3.0-set_DESKTOP_SESSION_in_env.diff 
+patch -p1 < $CWD/patches/lxdm-set_DESKTOP_SESSION_in_env.diff
+
+sh autogen.sh || true
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
@@ -108,6 +114,11 @@ make install DESTDIR=$PKG
 
 # We said --without-pam
 rm -rf $PKG/etc/pam.d
+
+# change default non-existent background image to a newly added one
+sed -i -e "s|^bg=.*|bg=/usr/share/wallpapers/stripes-lxdm.jpg|" \
+  $PKG/etc/lxdm/lxdm.conf
+install -m 0644 -D $CWD/stripes-lxdm.jpg $PKG/usr/share/wallpapers/stripes-lxdm.jpg
 
 # Install a to-be-customized-if-needed /etc/lxdm/xinitrc
 cat $CWD/xinitrc > $PKG/etc/lxdm/xinitrc.new

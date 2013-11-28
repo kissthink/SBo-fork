@@ -3,6 +3,7 @@
 # Slackware build script for SweetHome3D
 
 # Copyright 2011 by Giovanne Castro, Campinas, Sao Paulo, Brazil <giovannefc@ig.com.br>
+# Copyright 2012-2013 by Edward Koenig, Vancouver, Washington, USA <kingbeowulf@gmail.com>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -21,9 +22,13 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Changelog
+# 1.0	2012		New maintainer
+# 1.1	21-JUN-2013	updated copywrite notice; new version (thanks to rw)
 
 PRGNAM=SweetHome3D
-VERSION=${VERSION:-3.2}
+VERSION=${VERSION:-4.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -54,7 +59,7 @@ else
   LIBDIRSUFFIX=""
 fi
 
-set -e # Exit on most errors
+set -e
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
@@ -63,40 +68,34 @@ rm -rf $PRGNAM-$VERSION
 tar xvf $CWD/$PRGNAM-$VERSION-linux-$TARGET.tgz
 cd $PRGNAM-$VERSION
 chown -R root:root .
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-# Copy executable file
 mkdir -p $PKG/usr/bin
 cp -a SweetHome3D $PKG/usr/bin
 
-# Fix path for java and libs of SweetHome3D
-sed -i "s/\"\$PROGRAM_DIR\"\/jre1.6.0_24\/bin\/java/\/usr\/lib${LIBDIRSUFFIX}\/java\/bin\/java/g" $PKG/usr/bin/$PRGNAM
-sed -i "s/\"\$PROGRAM_DIR\"\/jre1.6.0_24\/lib/\/usr\/lib${LIBDIRSUFFIX}\/java\/lib/g" $PKG/usr/bin/$PRGNAM
-sed -i "s/\"\$PROGRAM_DIR\"\/lib/\/usr\/lib${LIBDIRSUFFIX}\/$PRGNAM/g" $PKG/usr/bin/$PRGNAM
+# Set program location and use global java
+sed -i $PKG/usr/bin/SweetHome3D \
+  -e "s,\"\$PROGRAM_DIR\"/jre1.6.0_45/bin/java,/usr/lib${LIBDIRSUFFIX}/java/bin/java,g" \
+  -e "s,\"\$PROGRAM_DIR\"/jre1.6.0_45/lib,/usr/lib${LIBDIRSUFFIX}/java/jre/lib,g" \
+  -e "s,\"\$PROGRAM_DIR\"/lib,/usr/share/$PRGNAM,g"
 
-# Copy libraries of program
-mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM
-cp -a lib/* $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM
+mkdir -p $PKG/usr/share/$PRGNAM
+cp -a lib/* $PKG/usr/share/$PRGNAM
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
-# Install icons
-mkdir -p $PKG/usr/share/pixmaps
-cat $CWD/SweetHome3D.png > $PKG/usr/share/pixmaps/SweetHome3D.png
-mkdir -p $PKG/usr/share/applications
+mkdir -p $PKG/usr/share/{applications,pixmaps}
 cat $CWD/SweetHome3D.desktop > $PKG/usr/share/applications/SweetHome3D.desktop
+cat $CWD/SweetHome3D.png > $PKG/usr/share/pixmaps/SweetHome3D.png
 
-# Copy documentation
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  COPYING.TXT LICENSE.TXT \
-  THIRDPARTY-LICENSE-*.TXT \
-  THIRDPARTY-LICENSE-JMF.HTML \
+  COPYING.TXT LICENSE.TXT THIRDPARTY-LICENSE-*.TXT THIRDPARTY-LICENSE-JMF.HTML \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 

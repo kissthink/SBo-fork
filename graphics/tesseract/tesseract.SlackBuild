@@ -1,16 +1,8 @@
 #!/bin/sh
-
-# Pierre Cazenave 10/11/2007.
-# Updated 25/01/2009.
-# Updated 08/04/2009.
-# Updated 28/05/2009 for Slackware64.
-# Updated 08/09/2010 Fixed language packs logic (Thanks to Ed Rozenberg)
-# 
-# Modified by Robby Workman <rworkman@slackbuilds.org> for better
-#   consistency with our other scripts
-# Thanks to S+*n_Pe*rm*n for a bug report from OCRopus.
+# Slackware build script for tesseract
 
 # Copyright 2009-2010 Pierre Cazenave <pwcazenave {at} gmail [dot] com>
+# Copyright 2013 LukenShiro, Italy
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -30,9 +22,17 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# Pierre Cazenave 10/11/2007.
+# Updated 25/01/2009.
+# Updated 08/04/2009.
+# Updated 28/05/2009 for Slackware64.
+# Updated 08/09/2010 Fixed language packs logic (Thanks to Ed Rozenberg)
+# Thanks to S+*n_Pe*rm*n for a bug report from OCRopus.
+# Modified by Willy Sudiarto Raharjo <willysr@slackware-id.org>
+
 PRGNAM=tesseract
-VERSION=2.04
-BUILD=${BUILD:-2}
+VERSION=${VERSION:-3.02.02}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -48,14 +48,6 @@ TMP=${TMP:-/tmp/SBo}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 
-# Language pack(s) to use
-# We'll install English by default, but you can pass another one (or all) 
-# of them on the command line (space delimited).  If you pass more than one
-# (again, space delimited), you must enclose the string in quotes.  Examples:
-# TESSLANG=fra ./tesseract.SlackBuild
-# TESSLANG="deu deu-f eng eus fra ita nld por spa vie" ./tesseract.SlackBuild
-TESSLANG=${TESSLANG:-"eng"}	# English only
-
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
   LIBDIRSUFFIX=""
@@ -70,6 +62,19 @@ else
   LIBDIRSUFFIX=""
 fi
 
+DOCFILES="AUTHORS COPYING ChangeLog INSTALL NEWS README ReleaseNotes"
+# Language data files
+# replace this with the 3-character ISO 639-2 language code of the language(s)
+# you want to install: different language data files can coexist nicely.
+# Available languages are (in no particular order):
+# grc epo_alt eng ukr tur tha tgl tel tam swe swa srp sqi spa_old spa slv
+# slk ron por pol nor nld msa mlt mkd mal lit lav kor kan ita_old ita isl
+# ind chr hun hrv hin heb glg frm frk fra fin eus est equ epo enm ell due
+# dan ces cat bul ben bel aze ara afr jpn chi_sim chi_tra rus vie
+# see https://code.google.com/p/tesseract-ocr/downloads/list for complete list
+LANGVER=${LANGVER:-3.02}
+LANGNAM=${LANGNAM:-"eng"}
+
 set -e
 
 rm -rf $TMP/$PRGNAM-$VERSION $PKG
@@ -78,11 +83,13 @@ cd $TMP
 tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
 cd $PRGNAM-$VERSION
 chown -R root:root .
-chmod -R u+w,go+r-w,a-s .
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+ -o -perm 511 \) -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+ -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
-# Fix missing snprintf()
-patch -p1 < $CWD/svutil.cpp-include_stdio_h.diff
-
+./autogen.sh
 CFLAGS="$SLKCFLAGS" \
 ./configure \
   --prefix=/usr \
@@ -94,54 +101,26 @@ CFLAGS="$SLKCFLAGS" \
   --build=$ARCH-slackware-linux
 
 make
-
-# Let's extract the desired language tarballs, with a hack for the different 
-# version numbers for certain language files. I shied away from wildcards as
-# they're a bit unpredictable...
-for _language in $(echo "$TESSLANG") ; do
-  if [ "$_language" == "eus" ]; then
-    if [ -r $CWD/tesseract-2.04.$_language.tar.gz ]; then
-      tar xf $CWD/tesseract-2.04.$_language.tar.gz
-      SUCCESS=yes
-    else
-      echo "$CWD/tesseract-2.01.$_language.tar.gz not found." 
-      sleep 5
-    fi;
-  elif [ "$_language" == "deu-f" -o "$_language" == "por" -o "$_language" == "vie" ]; then
-    if [ -r $CWD/tesseract-2.01.$_language.tar.gz ]; then
-      tar xf $CWD/tesseract-2.01.$_language.tar.gz
-      SUCCESS=yes
-    else
-      echo "$CWD/tesseract-2.01.$_language.tar.gz not found." 
-      sleep 5
-    fi;
-  else
-    if [ -r $CWD/tesseract-2.00.$_language.tar.gz ]; then
-      tar xf $CWD/tesseract-2.00.$_language.tar.gz
-      SUCCESS=yes
-    else
-      echo "$CWD/tesseract-2.00.$_language.tar.gz not found." 
-      sleep 5
-    fi;
-  fi
-done
-
-if [ ! "$SUCCESS" = "yes" ]; then
-  echo "No language packs were found, so this package will not work as is."
-  echo "See $CWD/README for more information."
-  exit 1
-fi
-
 make install DESTDIR=$PKG
 
-find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+# Extract language name described above;
+# language files are not automatically installed.
+mkdir -p $PKG/usr/share/tessdata
+for LNG in $LANGNAM; \
+ do tar xvf $CWD/tesseract-ocr-$LANGVER.$LNG.tar.gz ; \
+ mv tesseract-ocr/tessdata/* $PKG/usr/share/tessdata/
+done
+
+find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a AUTHORS COPYING ChangeLog INSTALL NEWS README ReleaseNotes \
+cp -a $DOCFILES  \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
-cat $CWD/README > $PKG/usr/doc/$PRGNAM-$VERSION/README.$TAG
 find $PKG/usr/doc/$PRGNAM-$VERSION -type f -exec chmod 644 {} \;
 
 mkdir -p $PKG/install

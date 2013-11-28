@@ -3,4 +3,4 @@ behaviour of the effects can be controlled from the host by simple parameters.
 The intent is to solve the recurring reimplementation or adaptation issue of
 standard effects.
 
-MD5 may be different since there is only a daily snapshot provided
+Optional dependencies are opencv and gavl.

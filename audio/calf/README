@@ -3,16 +3,14 @@ Calf audio plugin pack for LADSPA, DSSI, LV2 and JACK. Contains effects
 filter, multi-tap chorus and compressor) and instruments (organ simulator
 and a monophonic synthesizer).
 
-This requires jack-audio-connection-kit.
-
 Optional dependencies: By default, these are auto-detected at build time.
 Support for each dep will be built if found, unless disabled with an
 environment variable.
 
 ladspa_sdk: Disable with LADSPA=no (which will also disable DSSI).
 dssi: Disable with DSSI=no.
-lv2core and slv2: Disable with LV2=no.
-lash: cannot be disabled.
+lv2 and slv2: Disable with LV2=no.
+lash: cannot be disabled (will always be used if installed).
 
 Even with all the plugin formats disabled, calfjackhost will still
 be built.

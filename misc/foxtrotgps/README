@@ -3,5 +3,6 @@ use with (or without) GPS.
 
 FoxtrotGPS is an offshoot of Marcus Bauer's tangoGPS.
 
-GConf and gpsd are required.  gpscorrelate and jhead are optional runtime
-dependencies.
+gpscorrelate and jhead are optional runtime deps - if you install both,
+you will be able to geotag photos using the photos' timestamps and the
+gps track.

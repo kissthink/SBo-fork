@@ -1,4 +1,4 @@
 A GObject-based API for handling resource discovery and announcement
 over SSDP.
 
-This requires libsoup.
+vala is an optional dependency.

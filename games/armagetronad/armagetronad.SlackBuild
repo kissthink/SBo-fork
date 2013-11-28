@@ -1,10 +1,10 @@
 #!/bin/sh
 
-# Written by ponce <matteo.bernardini@gmail.com>
+# Written by Matteo Bernardini <ponce@slackbuilds.org>
 # based on the hollywoodb's one on 12.2 repository
 
 PRGNAM=armagetronad
-VERSION=${VERSION:-r999}
+VERSION=${VERSION:-0.2.8.3.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -41,17 +41,18 @@ rm -rf $PKG
 mkdir -p $PKG
 rm -rf $TMP/$PRGNAM-$VERSION
 cd $TMP
-tar xvf $CWD/$PRGNAM-$VERSION.tar.xz
+tar xvf $CWD/$PRGNAM-$VERSION.1.src.tar.?z*
 cd $PRGNAM-$VERSION
 
 chown -R root:root .
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-sh bootstrap.sh
+# Fix wrong detection of libpng in configure
+sed -i 's|png_check_sig|png_sig_cmp|g' configure
 
 # Using --disable-games since it peppers installation
 # paths with 'games' subdirectories and we're handling that manually.
@@ -95,12 +96,6 @@ rm -rf $PKG/etc/rc.d
 # don't overwrite old configs
 CONFIGS="aiplayers.cfg \
   default.cfg \
-  keys_cursor.cfg \
-  keys_cursor_single.cfg \
-  keys_twohand.cfg \
-  keys_wasd.cfg \
-  keys_x.cfg \
-  keys_zqsd.cfg \
   settings.cfg \
   settings_authentication.cfg \
   settings_dedicated.cfg \
@@ -121,4 +116,4 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
-/sbin/makepkg -l y -c n -p $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+/sbin/makepkg -l y -c n -p $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}

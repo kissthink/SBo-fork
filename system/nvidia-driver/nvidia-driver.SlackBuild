@@ -3,6 +3,7 @@
 # Slackware build script for nvidia-driver
 
 # Copyright 2007-2011 Heinz Wiesinger, Amsterdam, The Netherlands
+# Copyright 2012-2013 Edward W. Koenig, Vancouver, WA, USA
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -22,24 +23,32 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# Thanks to Robby Workman for suggestions to improve this script.
-#
 # ChangeLog
 # ------------------------------------------------------------------------------
 # 1.0	20-MAR-2011	New Maintainer: Edward W. Koenig <kingbeowulf@gmail.com>
 # 1.1	10-APR-2011	updated to new version, testing 13.37rc4.6692
 # 1.2   27-MAY-2011	new version, allow multilib option, minor edits
 # 1.2.1 20-JUNE-2011	minor edits, thanks to Robby and Roberto
-# 1.5	01-JULY-2011	new version, single driver download, add switch to select 
+# 1.5	01-JULY-2011	new version, single driver download, add switch to select
 #			pure x86_64 or x86_64 with 32-bit compatibility.
 # 1.6	27-AUG-2011	version bump, minor edits
 # 1.7	21-OCT-2011	version bump
 # 1.8   24-MAR-2012	version bump, fix to nvidia-switch thanks to Phill W.
+# 1.9   02-AUG-2012	version bmp, fixes, updates, nvidia-switch for install/uninstall only
+# 2.0	21-AUG-2012	new version (important security fix), missing vdpau-nvidia, dropped *.h
+# 2.1	25-AUG-2012	new version -Long Lived Branch, fixed symlinks (per Das email)
+# 2.2	22-NOV-2012	new version -Long Lived Branch. Updates: libs, apps
+# 2.3	15-FEB-2013	new version -Long Lived Branch.
+# 2.4	19-MAY-2013	new version -Long Lived Branch.
+# 2.6   20-OCT-2013	new version -Long Lived Branch, add new lib, fix nvidia-switch --remove
 
 PRGNAM=nvidia-driver
-VERSION=295.33
+VERSION=319.60
+MVERS=319
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
+CPROXY=${CPROXY:-no}
+OPTAPPS=${OPTAPPS:-no}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -65,7 +74,7 @@ elif [ "$ARCH" = "i686" ]; then
 elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-O2 -fPIC"
   TARGET="x86_64"
- LIBDIRSUFFIX="64"
+  LIBDIRSUFFIX="64"
 # Set 32-bit compatibility flag default
   COMPAT32=${COMPAT32:-no}
 else
@@ -86,55 +95,68 @@ rm -rf nvidia-settings-$VERSION
 tar xvf $CWD/nvidia-settings-$VERSION.tar.bz2
 rm -rf nvidia-xconfig-$VERSION
 tar xvf $CWD/nvidia-xconfig-$VERSION.tar.bz2
+rm -rf nvidia-modprobe-$VERSION.tar.bz2
+tar xvf $CWD/nvidia-modprobe-$VERSION.tar.bz2
+rm -rf nvidia-persistenced-$VERSION.tar.bz2
+tar xvf $CWD/nvidia-persistenced-$VERSION.tar.bz2
 rm -rf $SRCNAM
 sh $CWD/$SRCNAM.run --extract-only
 cd $SRCNAM
 chown -R root:root .
-chmod -R u+w,go+r-w,a-s .
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+ -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
 mkdir -p $PKG/usr/lib$LIBDIRSUFFIX/xorg/modules/{drivers,extensions} \
-  $PKG/etc/OpenCL/vendors/ $PKG/usr/lib$LIBDIRSUFFIX/{tls,vdpau} \
-  $PKG/usr/{bin,man/man1,sbin} $PKG/usr/share/{applications,pixmaps}
+  $PKG/etc/OpenCL/vendors/ $PKG/usr/lib$LIBDIRSUFFIX/tls \
+  $PKG/usr/{bin,man/man1,sbin} $PKG/usr/share/{applications,pixmaps} \
+  $PKG/usr/include/GL
 
+# Get all the libs to the right place
 install -m 755 nvidia_drv.so $PKG/usr/lib$LIBDIRSUFFIX/xorg/modules/drivers/
-install -m 755 libglx.so.$VERSION \
-  $PKG/usr/lib$LIBDIRSUFFIX/xorg/modules/extensions/libglx.so.$VERSION-nvidia
+install -m 755 libcuda.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
+install -m 755 libglx.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/xorg/modules/extensions/libglx.so.$VERSION-nvidia
 install -m 755 libGL.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/libGL.so.$VERSION-nvidia
 install -m 755 libGL.la $PKG/usr/lib$LIBDIRSUFFIX/
-install -m 755 libOpenCL.so.1.0.0 $PKG/usr/lib$LIBDIRSUFFIX/
-install -m 444 libXvMCNVIDIA.a $PKG/usr/lib$LIBDIRSUFFIX/
-install -m 755 libXvMCNVIDIA.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
-install -m 755 libvdpau_nvidia.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/vdpau/
-install -m 755 libcuda.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
-install -m 755 libnvidia-glcore.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
-install -m 755 libnvidia-wfb.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/xorg/modules/
-install -m 755 libnvidia-cfg.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
-install -m 755 libnvidia-ml.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
 install -m 755 libnvcuvid.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
+install -m 755 libnvidia-cfg.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
 install -m 755 libnvidia-compiler.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
-install -m 644 nvidia.icd $PKG/etc/OpenCL/vendors/
+install -m 755 libnvidia-encode.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
+install -m 755 libnvidia-glcore.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
+install -m 755 libnvidia-ifr.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
+install -m 755 libnvidia-ml.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
+install -m 755 libnvidia-opencl.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
 install -m 755 tls/libnvidia-tls.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/tls/
+install -m 755 libOpenCL.so.1.0.0 $PKG/usr/lib$LIBDIRSUFFIX/
 
-# Optional 32-bit support; NOTE! nvidia-switch does not operate here.
+# For 8-series GPU if libwfb.so is missing (ie older X servers).
+install -m 755 libnvidia-wfb.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/xorg/modules/libnvidia-wfb.so.$VERSION-nvidia
+
+# Don't forget separate libvdpau package on SBo.
+install -m 755 libvdpau_nvidia.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
+install -m 755 libvdpau_trace.so.$VERSION $PKG/usr/lib$LIBDIRSUFFIX/
+
+install -m 644 nvidia.icd $PKG/etc/OpenCL/vendors/
+
+# Add optional 32-bit support
 if [ "$ARCH" = "x86_64" -a "${COMPAT32}" = "yes" ]; then
-  mkdir -p $PKG/usr/lib/{tls,vdpau}
+  mkdir -p $PKG/usr/lib/tls
 
-  install -m 755 32/libGL.so.$VERSION $PKG/usr/lib/
-  install -m 755 32/libGL.la $PKG/usr/lib/
-  install -m 755 32/libnvidia-glcore.so.$VERSION $PKG/usr/lib/
-  install -m 755 32/libvdpau_nvidia.so.$VERSION $PKG/usr/lib/vdpau/
   install -m 755 32/libcuda.so.$VERSION $PKG/usr/lib/
+  install -m 755 32/libGL.so.$VERSION $PKG/usr/lib/libGL.so.$VERSION-nvidia
+  install -m 755 32/libGL.la $PKG/usr/lib/
+  install -m 755 32/libnvcuvid.so.$VERSION $PKG/usr/lib/
+  install -m 755 32/libnvidia-compiler.so.$VERSION $PKG/usr/lib/
+  install -m 755 32/libnvidia-encode.so.$VERSION $PKG/usr/lib/
+  install -m 755 32/libnvidia-glcore.so.$VERSION $PKG/usr/lib/
+  install -m 755 32/libnvidia-ifr.so.$VERSION $PKG/usr/lib/
+  install -m 755 32/libnvidia-opencl.so.$VERSION $PKG/usr/lib/
   install -m 755 32/tls/libnvidia-tls.so.$VERSION $PKG/usr/lib/tls/
   install -m 755 32/libOpenCL.so.1.0.0 $PKG/usr/lib/
-  install -m 755 32/libnvidia-compiler.so.$VERSION $PKG/usr/lib/
+  install -m 755 32/libvdpau_nvidia.so.$VERSION $PKG/usr/lib/
 fi
-
-# Next come the apps
-for i in nvidia-smi nvidia-bug-report.sh; do
-  install -m 755 $i $PKG/usr/bin/
-done
-
-install -m 644 nvidia-smi.1.gz $PKG/usr/man/man1/
 
 # symlinks
 cd $PKG/usr/lib$LIBDIRSUFFIX
@@ -142,47 +164,56 @@ cd $PKG/usr/lib$LIBDIRSUFFIX
     ln -s $i.so.$VERSION $i.so.1
     ln -s $i.so.1 $i.so
   done
-  ln -sf libXvMCNVIDIA.so.$VERSION libXvMCNVIDIA_dynamic.so.1
-  ln -sf libXvMCNVIDIA.so.$VERSION libXvMCNVIDIA_dynamic.so
   ln -sf libOpenCL.so.1.0.0 libOpenCL.so.1.0
   ln -sf libOpenCL.so.1.0 libOpenCL.so.1
   ln -sf libOpenCL.so.1 libOpenCL.so
   ln -sf libnvcuvid.so.$VERSION libnvcuvid.so.1
-  ln -sf libnvcuvidv.so.$VERSION libnvcuvid.so
-  ln -sf tls/libnvidia-tls.so.$VERSION libnvidia-tls.so.$VERSION
-cd -
-
-cd $PKG/usr/lib$LIBDIRSUFFIX/vdpau
+  ln -sf libnvcuvid.so.1 libnvcuvid.so
   ln -sf libvdpau_nvidia.so.$VERSION libvdpau_nvidia.so
-  ln -sf libvdpau_nvidia.so.$VERSION libvdpau_nvidia.so.1
-cd -
-
-cd $PKG/usr/lib$LIBDIRSUFFIX/xorg/modules
-  ln -sf libnvidia-wfb.so.$VERSION libnvidia-wfb.so.1
+  ln -sf tls/libnvidia-tls.so.$VERSION libnvidia-tls.so.$VERSION
 cd -
 
 # symlinks for optional 32-bit support
 if [ "$ARCH" = "x86_64" -a "${COMPAT32}" = "yes" ]; then
   cd $PKG/usr/lib
-    ln -sf libGL.so.$VERSION libGL.so.1
-    ln -sf libGL.so.1 libGL.so
-    ln -sf libcuda.so.$VERSION libcuda.so.1
-    ln -sf libcuda.so.1 libcuda.so
+    ln -sf libcuda.so.$VERSION libcuda.so.$MVERS
+    ln -sf libcuda.so.$MVERS libcuda.so
     ln -sf libOpenCL.so.1.0.0 libOpenCL.so.1.0
     ln -sf libOpenCL.so.1.0 libOpenCL.so.1
     ln -sf libOpenCL.so.1 libOpenCL.so
+    ln -sf libnvcuvid.so.$VERSION libnvcuvid.so.1
+    ln -sf libnvcuvid.so.1 libnvcuvid.so
+    ln -sf libvdpau_nvidia.so.$VERSION libvdpau_nvidia.so
     ln -sf tls/libnvidia-tls.so.$VERSION libnvidia-tls.so.$VERSION
   cd -
 fi
 
+# Next come the apps
+for i in nvidia-smi nvidia-bug-report.sh nvidia-debugdump; do
+  install -m 755 $i $PKG/usr/bin/
+done
+
+install -m 644 nvidia-smi.1.gz $PKG/usr/man/man1/
+
+# New CUDA proxy server for 64-bit Linux only, and requires a device that supports
+# Unified Virtual Address (UVA) and CUDA 4.0+.
+if [ "$ARCH" = "x86_64" -a "${CPROXY}" = "yes" ]; then
+   install -m 755 nvidia-cuda-mps-control $PKG/usr/bin/
+   install -m 755 nvidia-cuda-mps-server $PKG/usr/bin/
+   install -m 644 nvidia-cuda-mps-control.1.gz $PKG/usr/man/man1/
+fi
+
 # Compiling nvidia-installer from source
+# Not really needed for this SBo package
 cd $TMP/nvidia-installer-$VERSION
   chown -R root:root .
-  chmod -R u+w,go+r-w,a-s .
+  find -L . \
+   \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+    -o -perm 511 \) -exec chmod 755 {} \; -o \
+   \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+    -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
-  CFLAGS="$SLKCFLAGS" \
-  LDFLAGS="-lz" \
-  make
+  CFLAGS="$SLKCFLAGS" LDFLAGS="-lz" make
 
   install -m 755 _out/Linux_$TARGET/nvidia-installer $PKG/usr/bin/
   install -m 644 _out/Linux_$TARGET/nvidia-installer.1.gz $PKG/usr/man/man1/
@@ -191,7 +222,11 @@ cd -
 # Compiling nvidia-settings from source
 cd $TMP/nvidia-settings-$VERSION
   chown -R root:root .
-  chmod -R u+w,go+r-w,a-s .
+  find -L . \
+   \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+    -o -perm 511 \) -exec chmod 755 {} \; -o \
+   \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+    -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
   cd src/libXNVCtrl
     make clean
@@ -202,8 +237,8 @@ cd $TMP/nvidia-settings-$VERSION
   CFLAGS="$SLKCFLAGS" \
   make
 
-  install -m 755 _out/Linux_$TARGET/nvidia-settings $PKG/usr/bin/
-  install -m 644 _out/Linux_$TARGET/nvidia-settings.1.gz $PKG/usr/man/man1/
+  install -m 755 src/_out/Linux_$TARGET/nvidia-settings $PKG/usr/bin/
+  install -m 644 doc/_out/Linux_$TARGET/nvidia-settings.1.gz $PKG/usr/man/man1/
   install -m 644 doc/nvidia-settings.desktop $PKG/usr/share/applications/
   install -m 644 doc/nvidia-settings.png $PKG/usr/share/pixmaps/
 cd ../
@@ -211,7 +246,11 @@ cd ../
 # Compiling nvidia-xconfig from source
 cd $TMP/nvidia-xconfig-$VERSION
   chown -R root:root .
-  chmod -R u+w,go+r-w,a-s .
+  find -L . \
+   \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+    -o -perm 511 \) -exec chmod 755 {} \; -o \
+   \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+    -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
   CFLAGS="$SLKCFLAGS" \
   make
@@ -220,14 +259,52 @@ cd $TMP/nvidia-xconfig-$VERSION
   install -m 644 _out/Linux_$TARGET/nvidia-xconfig.1.gz $PKG/usr/man/man1/
 cd -
 
-# Self written bash script which I (H.W.) use to switch between nvidia and nv.
-# It is now also used by doinst.sh to switch to the nvidia-driver right
-# after installation.  For 32-bit and pure 64-bit only (EWK).
+# Some new optional "useless" utilities. FIXME: Needs cleanup at a later date.
+if [ "${OPTAPPS}" = "yes" ]; then
+
+# Compiling nvidia-modprobe from source
+  cd $TMP/nvidia-modprobe-$VERSION
+    chown -R root:root .
+    find -L . \
+     \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+      -o -perm 511 \) -exec chmod 755 {} \; -o \
+     \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+      -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
+
+    CFLAGS="$SLKCFLAGS" make
+
+    install -m 755 _out/Linux_$TARGET/nvidia-modprobe $PKG/usr/bin/
+    install -m 644 _out/Linux_$TARGET/nvidia-modprobe.1.gz $PKG/usr/man/man1/
+  cd -
+# Compiling nvidia-persistenced from source
+  cd $TMP/nvidia-persistenced-$VERSION
+    chown -R root:root .
+    find -L . \
+     \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+      -o -perm 511 \) -exec chmod 755 {} \; -o \
+     \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+      -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
+
+    CFLAGS="$SLKCFLAGS" make
+#FIXME: need rc.nvidia-persistenced script
+    install -m 755 _out/Linux_$TARGET/nvidia-persistenced $PKG/usr/bin/
+    install -m 644 _out/Linux_$TARGET/nvidia-persistenced.1.gz $PKG/usr/man/man1/
+  cd -
+fi
+
+# Bash script to cleanly install (in doinst.sh) and uninstall the nvidia files
+# so we don't stomp on the overlapping xorg files.
+# Note: switching "on the fly" is no longer supported.
 install -m 0755 $CWD/nvidia-switch $PKG/usr/sbin/
 sed -i s/PKGVERSION/$VERSION/g $PKG/usr/sbin/nvidia-switch
 sed -i s/LIBDIRSUFFIX/$LIBDIRSUFFIX/g $PKG/usr/sbin/nvidia-switch
+if [ ${COMPAT32} = "yes" ]; then
+  sed -i s/LIB32FLAG/yes/g $PKG/usr/sbin/nvidia-switch
+else
+  sed -i s/LIB32FLAG/no/g $PKG/usr/sbin/nvidia-switch
+fi
 
-# These correct wrong paths
+# These update placeholders and correct wrong paths
 sed -i "s|__LIBGL_PATH__|/usr/lib$LIBDIRSUFFIX/|" $PKG/usr/lib$LIBDIRSUFFIX/libGL.la
 sed -i "s|/usr/X11R6/lib|/usr/lib$LIBDIRSUFFIX/|" $PKG/usr/lib$LIBDIRSUFFIX/libGL.la
 sed -i "s|__UTILS_PATH__|/usr/bin|" \
@@ -239,7 +316,9 @@ sed -i "s|__NVIDIA_SETTINGS_DESKTOP_CATEGORIES__|Application;Settings;|" \
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cd $TMP/$SRCNAM
+
 cp -a LICENSE NVIDIA_Changelog README.txt html $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a nvidia-persistenced-init.tar.bz2 $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/README > $PKG/usr/doc/$PRGNAM-$VERSION/README.Slackware
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 

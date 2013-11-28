@@ -6,7 +6,7 @@
 # Derived from Slackware's Slackbuilds.
 #
 # Copyright 2008, 2009  Patrick J. Volkerding, Sebeka, Minnesota, USA
-# Copyright 2008-2011  David Somero (dsomero@hotmail.com) Athens, TN, USA
+# Copyright 2008-2012  David Somero (dsomero@hotmail.com) Athens, TN, USA
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -27,7 +27,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=avahi
-VERSION=0.6.30
+VERSION=0.6.31
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -90,7 +90,14 @@ rm -rf $PRGNAM-$VERSION
 tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
 cd $PRGNAM-$VERSION
 chown -R root:root .
-chmod -R a-s,u+w,go+r-w .
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+ -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
+
+# Thanks to Robby Workman for this patch.
+patch -p1 --verbose < $CWD/fixup_avahi-dnsconfd.action.patch
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
@@ -101,6 +108,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --localstatedir=/var \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
+  --enable-tests \
   --disable-static \
   --disable-monodoc \
   --disable-autoipd \
@@ -110,7 +118,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --enable-dbus \
   --enable-python \
   --enable-gtk \
-  --disable-gtk3 \
+  --enable-gtk3 \
   --enable-qt4 \
   --disable-qt3 \
   --enable-core-docs \
@@ -128,6 +136,10 @@ CXXFLAGS="$SLKCFLAGS" \
 
 make
 make install DESTDIR=$PKG
+
+# howl and mdnsresponder compatability
+(cd $PKG/usr/include; ln -s avahi-compat-libdns_sd/dns_sd.h dns_sd.h; ln -s avahi-compat-howl howl)
+(cd $PKG/usr/lib$LIBDIRSUFFIX/pkgconfig; ln -s avahi-compat-howl.pc howl.pc)
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true

@@ -9,12 +9,11 @@ Yabause is a Sega Saturn emulator. It has the following features:
   * joystick support
   * region select
 
-Requires: gtkglext
-Optional: mini18n and OpenAL
-For translation support install mini18n.
+gtkglext, mini18n and OpenAL are optional dependencies.
 
 By default the QT version of yabause is built.  To use the GTK
-version then pass USE_GUI=gtk to the slackbuild.
+version, first install gtkglext then pass USE_GUI=gtk to the
+slackbuild.
 
 USE_GUI=gtk ./yabause.SlackBuild
 

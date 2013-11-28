@@ -1,20 +1,27 @@
 #!/bin/sh
 
-# SlackBuild script for R, by melikamp, Andrew Rowland.
-# (Contributors are listed in order of first participation.)
+# SlackBuild script for R, by melikamp, Andrew Rowland.  (Contributors
+# are listed in order of first participation.)
 
-# This program is free software: it is placed into the Public Domain
-# by the author(s). A verbose dedication is available at
-# http://creativecommons.org/publicdomain/zero/1.0/legalcode
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
 
 # This program is distributed in the hope that it will be useful, but
-# without any warranty; compiling, interpreting, executing or merely
-# reading the text of the program may result in lapses of consciousness
-# and/or very being, up to and including the end of all existence and
-# the Universe as we know it.
+# without any warranty; without even the implied warranty of
+# merchantability or fitness for a particular purpose. Compiling,
+# interpreting, executing or merely reading the text of the program
+# may result in lapses of consciousness and/or very being, up to and
+# including the end of all existence and the Universe as we know it.
+# See the GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program (most likely, a file named COPYING).  If
+# not, see <http://www.gnu.org/licenses/>.
 
 PRGNAM=R
-VERSION=2.15.0
+VERSION=3.0.2
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -65,8 +72,8 @@ rm -rf $PRGNAM-$VERSION
 tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
 cd $PRGNAM-$VERSION
 chown -R root:root .
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
@@ -85,7 +92,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --build=$ARCH-slackware-linux
 
 make
-mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/R/lib # work around make install bug
 make install DESTDIR=$PKG
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
@@ -96,7 +102,7 @@ for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; r
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a README NEWS $PKG/usr/doc/$PRGNAM-$VERSION
-tar cfJ $PKG/usr/doc/$PRGNAM-$VERSION/OLDER_NEWS.txz ONEWS OONEWS
+tar cfJ $PKG/usr/doc/$PRGNAM-$VERSION/OLDER_NEWS.txz NEWS.[012]
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install

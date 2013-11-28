@@ -4,8 +4,4 @@ apply different effects to it, draw on it to highlight points, and then
 upload to an image hosting site, all within one window. Shutter is free, 
 open-source, and licensed under GPL v3.
 
-This requires perl-gtk2-imageview, perl-gnome2, perl-gnome2-wnck,
-perl-gnome2-gconf, locale-gettext, perl-www-mechanize, perl-net-dbus,
-perl-x11-protocol and perl-proc-processtable.
-
-Optional requirement is perl-goo-canvas for drawing tool.
+perl-goo-canvas is an optional dependency for drawing tool.

@@ -34,10 +34,14 @@
 #             * Initial build.
 # 0.1.1-1:    11/sep/2009 by Eric Hameleers <alien@slackware.com>
 #             * Update.
-# 0.1.3-1:    12/sep/2010 by ponce <matteo.bernardini@gmail.com>
+# 0.1.3-1:    12/sep/2010 by Matteo Bernardini <ponce@slackbuilds.org>
 #             * Adapted to slackbuilds.org's autotools template.
 #             * updated to latest version.
-# 20111224_c77968d: 26/dec/2011 by ponce <matteo.bernardini@gmail.com>
+# 20111224_c77968d: 26/dec/2011 by Matteo Bernardini <ponce@slackbuilds.org>
+#             * updated.
+# 20120812_204b61f: 13/aug/2012 by Matteo Bernardini <ponce@slackbuilds.org>
+#             * updated.
+# 20130906_e638342: 23/sep/2013 by Matteo Bernardini <ponce@slackbuilds.org>
 #             * updated.
 #
 # Run 'sh lxtask.SlackBuild' to build a Slackware package.
@@ -47,7 +51,7 @@
 # -----------------------------------------------------------------------------
 
 PRGNAM=lxtask
-VERSION=${VERSION:-20111224_c77968d}
+VERSION=${VERSION:-20130906_e638342}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -86,11 +90,11 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.?z
+tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*
 cd $PRGNAM-$VERSION
 chown -R root:root .
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;

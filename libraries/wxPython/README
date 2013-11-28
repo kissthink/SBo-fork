@@ -8,8 +8,8 @@ If you want support for gnomeprint pass GNOMEPRINT=yes to the script. This
 will require libgnomeprint and libgnomeprintui, both available from
 SlackBuilds.org.
 
-Building the media library, which provides bindings for gstreamer,
-requires GConf.
+Another optional dependency is libmspack, which is used by the CHM help
+viewer.
 
-This package conflicts with wxGTK because it's already included in wxPython.
-Both cannot be installed at the same time!
+wxPython is a port of wxWidgets and as such compatible to other ports like
+wxGTK and wxX11.

@@ -1,14 +1,14 @@
 PRGNAM="LibRaw"
-VERSION="0.13.8"
+VERSION="0.15.4"
 HOMEPAGE="http://www.libraw.org/"
-DOWNLOAD="http://www.libraw.org/data/LibRaw-0.13.8.tar.gz \
-          http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.13.8.tar.gz \
-          http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.13.8.tar.gz"
-MD5SUM="62cd5fee94915add0c43a97ec6909bbb \
-        6bb0519f322dd8a0ea47ffce70caa1a7 \
-        669c3f59b52bbee1adf74724dd25270a"
+DOWNLOAD="http://www.libraw.org/data/LibRaw-0.15.4.tar.gz \
+          http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.15.4.tar.gz \
+          http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.15.4.tar.gz"
+MD5SUM="358fb3795ab53e1d30d5a61555f1eb17 \
+        29fbddf1bf7e92f86d1d6f4927c3feb7 \
+        a7d4e9fb4688d956768c21fcafbcef00"
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
+REQUIRES=""
 MAINTAINER="David Spencer"
 EMAIL="baildon.research@googlemail.com"
-APPROVED="Erik Hanson"

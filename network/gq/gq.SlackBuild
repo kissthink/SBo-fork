@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright 2010 Chris Abela <chris.abela@maltats> 
+# Copyright 2010 Chris Abela <chris.abela@maltats>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -22,7 +22,7 @@
 
 PRGNAM=gq
 VERSION=${VERSION:-1.2.3}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -52,7 +52,7 @@ else
   LIBDIRSUFFIX=""
 fi
 
-set -e # Exit on most errors
+set -e
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
@@ -61,11 +61,17 @@ rm -rf $PRGNAM-$VERSION
 tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
 cd $PRGNAM-$VERSION
 chown -R root:root .
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
+
+# Starting with glib 2.32 it is now mandatory to
+# include glib.h instead of individual headers.
+patch -p1 -i $CWD/glib-single-include.patch
+# Fix for gcc 4.7
+patch -p1 -i $CWD/gcc-4.7.patch
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
