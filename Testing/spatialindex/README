@@ -1,6 +1,0 @@
-The spatialindex library provides an extensible framework that
-supports robust spatial indexing methods and sophisticated spatial
-queries: range, point location, nearest neighbor and k-nearest neighbor
-as well as parametric queries (defined by spatial constraints).
-
-Homepage: http://libspatialindex.github.com/
